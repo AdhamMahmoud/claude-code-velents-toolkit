@@ -1,0 +1,40 @@
+{
+  "name": "velents-toolkit",
+  "owner": {
+    "name": "Adham Mahmoud",
+    "email": "hi@adhamm.dev",
+    "url": "https://github.com/adhammahmoud"
+  },
+  "metadata": {
+    "description": "Claude Code plugin for VelentsAI development — Laravel 12 backend, Next.js 16 frontend, multi-tenancy, AI integrations, spec-driven development",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "velents-toolkit",
+      "source": "./",
+      "description": "Claude Code plugin for VelentsAI development — Laravel 12 backend, Next.js 16 frontend, multi-tenancy, AI integrations, spec-driven development",
+      "version": "1.0.0",
+      "author": {
+        "name": "Adham Mahmoud",
+        "email": "hi@adhamm.dev",
+        "url": "https://github.com/adhammahmoud"
+      },
+      "homepage": "https://github.com/adhammahmoud",
+      "repository": "https://github.com/adhammahmoud",
+      "license": "MIT",
+      "keywords": [
+        "laravel",
+        "nextjs",
+        "multi-tenancy",
+        "ai-agents",
+        "voip",
+        "whatsapp",
+        "elevenlabs",
+        "livekit",
+        "gemini",
+        "spec-kit"
+      ]
+    }
+  ]
+}

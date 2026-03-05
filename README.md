@@ -251,4 +251,4 @@ Agents are assigned models based on task complexity:
 
 ## Author
 
-Built by **Adham Mahmoud** for the VelentsAI team.
+Built by **[Adham Mahmoud](https://github.com/adhammahmoud)** · hi@adhamm.dev
