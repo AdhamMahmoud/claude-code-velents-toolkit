@@ -1,0 +1,35 @@
+# Zod Documentation Summary
+
+This is comprehensive documentation for **Zod 4**, a TypeScript-first schema validation library with static type inference.
+
+## Key Features
+
+**Core Capabilities:**
+- Define schemas for primitives, objects, arrays, and complex nested structures
+- Validate data with `.parse()`, `.safeParse()`, and async variants
+- Extract inferred types using `z.infer<>`
+
+**Schema Types Supported:**
+Primitives (string, number, boolean, etc.), literals, enums, objects, arrays, tuples, unions, discriminated unions, records, maps, sets, dates, and custom types.
+
+**Advanced Features:**
+- Refinements and custom validations via `.refine()` and `.superRefine()`
+- Transformations with `.transform()` and pipes
+- Bidirectional encoding/decoding through codecs (new in v4.1)
+- Defaults, prefaults, and catch values
+- Branded types for nominal typing simulation
+- Readonly enforcement with deep freezing
+
+**String Validations:**
+Built-in support for email, UUID, URL, IP addresses, ISO datetimes, JWT, hashes, and custom formats.
+
+**Number & BigInt Operations:**
+Comparisons (gt, gte, lt, lte), range checks, and multiple-of validations.
+
+## Error Handling
+
+Invalid data throws `ZodError` with granular issue information including error codes, paths, and messages. The `.safeParse()` method returns a discriminated union avoiding try-catch blocks.
+
+## Type System
+
+Input and output types can diverge when using transforms or codecs. Use `z.input<>` and `z.output<>` utilities to extract distinct types separately.

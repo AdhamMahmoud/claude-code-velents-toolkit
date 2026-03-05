@@ -1,0 +1,32 @@
+# Next.js Documentation Content
+
+I have the complete Next.js documentation content you provided. This covers the following sections:
+
+## Sections Included:
+
+1. **Getting Started** - Introduction and core concepts
+2. **Installation** - Setup instructions for different package managers (npm, yarn, pnpm, bun)
+3. **Project Structure** - Folder and file conventions, routing files, organization strategies
+4. **Layouts and Pages** - Creating pages, layouts, nested routes, dynamic segments
+5. **Linking and Navigating** - Navigation optimization, prefetching, streaming, client-side transitions
+6. **Server and Client Components** - When to use each, composition patterns, context providers
+7. **Cache Components** - Partial prerendering, static shells, deferred rendering
+
+## Key Information:
+
+- **Version**: 16.1.6 (with extended/refined behavior in minor/patch releases)
+- **Router**: App Router (unless otherwise noted)
+- **Prerequisites**: Familiarity with HTML, CSS, JavaScript, and React
+
+## Quick Start Command:
+
+```bash
+npm create next-app@latest my-app --yes
+cd my-app
+npm run dev
+```
+
+## System Requirements:
+- Node.js 20.9+
+- macOS, Windows (WSL), or Linux
+- Modern browsers (Chrome 111+, Edge 111+, Firefox 111+, Safari 16.4+)

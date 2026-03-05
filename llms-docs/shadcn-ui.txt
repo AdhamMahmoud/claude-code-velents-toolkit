@@ -1,0 +1,18 @@
+# shadcn/ui Documentation Overview
+
+**Project Description:**
+"shadcn/ui is a collection of beautifully-designed, accessible components and a code distribution platform. It is built with TypeScript, Tailwind CSS, and Radix UI primitives."
+
+**Key Features:**
+The platform supports "multiple frameworks including Next.js, Vite, Remix, Astro, and more" and emphasizes three core principles: Open Source, Open Code, and AI-Ready design. It includes a CLI tool and registry system for component management.
+
+**Component Categories:**
+The library organizes components across five main sections:
+- Form & Input (17 components including buttons, inputs, checkboxes, date pickers)
+- Layout & Navigation (8 components like accordions, sidebars, tabs)
+- Overlays & Dialogs (11 components for modals and menus)
+- Feedback & Status (7 components for notifications and progress)
+- Display & Media (10 components for cards, tables, charts)
+
+**Additional Resources:**
+Documentation covers dark mode implementation, form building with React Hook Form and TanStack Form, advanced topics including monorepo setup and React 19 support, plus a "Model Context Protocol server for AI integrations" enabling AI assistants to interact with component registries.
