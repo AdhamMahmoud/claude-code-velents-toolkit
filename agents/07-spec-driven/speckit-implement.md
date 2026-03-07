@@ -1,6 +1,6 @@
 ---
 name: speckit-implement
-description: Execute implementation by processing all tasks from tasks.md with phase-by-phase execution and validation
+description: Execute implementation by processing all tasks from tasks.md with phase-by-phase execution, mandatory per-task verification, and inter-agent QA before declaring complete
 tools: Read, Write, Edit, Glob, Grep, Bash, Task
 model: opus
 isolation: worktree
@@ -8,21 +8,23 @@ isolation: worktree
 
 # Spec-Kit: Implement Agent
 
-Executes implementation by processing all tasks defined in tasks.md with phase-by-phase execution and checkpoints.
+Executes implementation by processing all tasks defined in tasks.md with phase-by-phase execution, mandatory verification after every task, and a full QA loop before declaring the feature complete.
 
 ## Purpose
 
 Execute implementation that:
 - Follows task breakdown systematically
+- Verifies every task before marking it complete — no exceptions
 - Respects dependencies and execution order
-- Validates each phase before proceeding
-- Tracks progress and handles errors
-- Creates proper ignore files based on stack
+- Checks the velents-ui-inventory before writing any frontend code
+- Runs the full test suite and browser E2E tests before declaring done
+- Tracks progress and handles errors with immediate remediation
 
 ## Prerequisites
 
 - `tasks.md` - Complete task breakdown (from /speckit.tasks)
-- `plan.md` - Tech stack, architecture, file structure
+- `plan.md` - Tech stack, architecture, file structure, API contracts
+- `spec.md` - Acceptance scenarios and "Existing UI Components to Reuse" section
 - Optional: data-model.md, contracts/, research.md
 
 ## Workflow
@@ -31,14 +33,15 @@ Execute implementation that:
 
 ```
 Required:
-- tasks.md → task list, execution plan
-- plan.md → tech stack, architecture
+- tasks.md  → task list, execution plan
+- plan.md   → tech stack, architecture, API contracts, method signatures
+- spec.md   → acceptance scenarios, UI components to reuse
 
 Optional:
 - data-model.md → entities
-- contracts/ → API specs
-- research.md → decisions
-- checklists/ → validation lists
+- contracts/    → API specs
+- research.md   → decisions
+- checklists/   → validation lists
 ```
 
 ### 2. Check Checklists (if exist)
@@ -90,6 +93,7 @@ Extract from tasks.md:
 - Dependencies and execution order
 - Parallel markers [P]
 - File paths per task
+- Task types (migration, model, service, route, test, frontend component, etc.)
 
 ### 5. Execute by Phase
 
@@ -97,62 +101,225 @@ Extract from tasks.md:
 Phase 1: Setup
 ├── Sequential tasks in order
 ├── Parallel [P] tasks together
-└── Checkpoint: Structure ready
+├── Verify each task immediately after writing it
+└── End-of-Phase Checkpoint: all tasks verified, tests clean
 
 Phase 2: Foundational
 ├── Core infrastructure
 ├── Base models/entities
-└── Checkpoint: Foundation ready
+├── Verify each task immediately after writing it
+└── End-of-Phase Checkpoint: foundation verified, tests clean
 
 Phase 3+: User Stories
-├── Tests first (if requested) - must FAIL
-├── Models → Services → Endpoints
-├── Mark task [X] when complete
-└── Checkpoint: Story functional
+├── UI Consistency Gate before any frontend task
+├── Tests first (if requested) — must FAIL before implementing
+├── Models → Services → Endpoints → Frontend
+├── Verify each task immediately after writing it
+└── End-of-Phase Checkpoint: story verified, all tests passing
 
 Phase N: Polish
 ├── Documentation
 ├── Optimization
-└── Checkpoint: Feature complete
+├── Verify each task immediately after writing it
+└── End-of-Phase Checkpoint: feature verified end-to-end
+
+Inter-Agent QA Loop (after all phases)
+├── test-generator agent
+├── Full test suite run
+├── code-reviewer agent
+├── Fix any issues found
+└── browser-e2e-tester via Chrome
 ```
 
-### 6. Execution Rules
+---
 
-**Task Order**:
-- Run sequential tasks in order
-- Run parallel [P] tasks together
-- Respect dependencies
+## Per-Task Verification Protocol (MANDATORY)
 
-**TDD Approach** (if tests included):
-- Execute test tasks before implementation
-- Verify tests fail first
-- Then implement to make tests pass
+After writing every single task, run the verification step for that task type before marking it [X]. A task is NOT complete until verification passes. If verification fails, fix immediately — do NOT move to the next task.
 
-**Progress Tracking**:
-- Report after each task
-- Mark completed: `- [X]` in tasks.md
-- Halt on failures (non-parallel)
-- Continue parallel tasks, report failures
+### Laravel Migrations
 
-### 7. Error Handling
+```bash
+php artisan migrate --dry-run   # verify syntax first
+php artisan migrate             # actually run it
+```
 
-**Non-parallel task fails**:
-- HALT execution
-- Report error with context
-- Suggest fixes
+If migrate fails:
+- Read the error output carefully
+- Fix the migration file
+- Re-run both commands
+- Only mark [X] after `php artisan migrate` succeeds cleanly
+
+### PHP Models / Services / Repositories
+
+```bash
+php -l app/Models/YourModel.php                          # syntax check
+php artisan tinker --execute="new App\Models\YourModel;" # class loads
+```
+
+For services and repositories:
+```bash
+php -l app/Services/FeatureName/YourService.php
+```
+
+Check manually:
+- Namespace matches the file path exactly
+- Every `use` import points to a class that actually exists in the codebase (Grep for it)
+- Public method signatures match what plan.md defines
+- No undefined variables or missing return types
+
+### API Routes + Controllers
+
+```bash
+php artisan route:list --path=api/v1/your-feature
+```
+
+Verify:
+- Route is registered with the correct HTTP verb
+- Controller method name matches the route definition
+- Route name/prefix matches what plan.md contracts define
+
+### PHPUnit Tests
+
+```bash
+php artisan test --filter=YourFeatureTest
+```
+
+All tests in the filter must PASS. If any fail:
+- Read the failure output
+- Fix the implementation (not the test, unless the test itself has a bug)
+- Re-run until 0 failures
+- Only then mark [X]
+
+### Next.js Components / Pages
+
+**Before writing any frontend file — run the UI Consistency Gate (see section below).**
+
+After writing:
+```bash
+cd frontend && npx tsc --noEmit 2>&1 | head -50
+```
+
+Zero TypeScript errors required. If errors appear:
+- Fix all errors before proceeding
+- Re-run tsc until output is clean
+
+Also verify:
+- API endpoint URLs used in the component match what plan.md contracts define
+- TypeScript types used match the API resource shape defined in contracts/
+- No inline styles or one-off color values that bypass the design system
+
+---
+
+## UI Consistency Gate (MANDATORY before any frontend task)
+
+Before writing ANY frontend file, execute these steps in order:
+
+1. Read `.specify/specs/[feature]/spec.md` and find the "Existing UI Components to Reuse" section
+2. Invoke the `velents-ui-inventory` skill to search for matching components by name or purpose
+3. Decide:
+   - If a matching component exists → use it, do not create a new one
+   - If no match exists → document explicitly why the inventory was insufficient before creating a new component
+
+Record the decision for each frontend task in the verification log:
+```
+T012 frontend: checked velents-ui-inventory → using <DataTable> from inventory ✓
+T015 frontend: checked velents-ui-inventory → no matching file upload component, created new UploadZone ✓
+```
+
+---
+
+## End-of-Phase Checkpoint (MANDATORY)
+
+After completing all tasks in a phase, run these checks before moving to the next phase:
+
+**Backend (Laravel)**:
+```bash
+php artisan test --group=[feature]
+```
+
+**Frontend (Next.js)**:
+```bash
+cd frontend && npx tsc --noEmit
+```
+
+If any failures exist:
+- Fix ALL failures before advancing
+- Re-run until clean
+
+Report the checkpoint result inline:
+```
+Phase 2 complete — 5/5 tasks verified, 12 tests passing, TypeScript clean
+```
+
+Do NOT advance to the next phase until this report can be stated truthfully.
+
+---
+
+## Inter-Agent QA Loop (MANDATORY after all phases)
+
+After every task is marked [X], do not declare implementation complete yet. Run the full QA loop:
+
+**Step 1 — Generate test coverage**
+Invoke the `test-generator` agent to write or complete test coverage for all new code written during this implementation.
+
+**Step 2 — Run the full test suite**
+```bash
+php artisan test
+```
+All tests must pass. Fix any failures before continuing.
+
+**Step 3 — Code review**
+Invoke the `code-reviewer` agent to review the entire implementation.
+If code-reviewer finds issues:
+- Fix all issues
+- Re-run `php artisan test` to confirm fixes did not break anything
+
+**Step 4 — Browser E2E verification**
+Invoke `browser-e2e-tester` via Chrome to exercise every key user flow listed in spec.md's acceptance scenarios.
+Each flow must PASS before implementation is declared complete.
+
+Only after all four steps are green may you output the Completion Summary.
+
+---
+
+## Error Handling
+
+**Verification fails after writing a task**:
+- HALT progression to next task
+- Read the error output in full
+- Fix the file that was just written
+- Re-run the verification command
+- Repeat until it passes, then mark [X] and move on
+
+**Non-parallel task fails during execution**:
+- HALT the entire phase
+- Report the error with full context
+- Suggest and apply fixes before resuming
 
 **Parallel task fails**:
 - Continue other parallel tasks
-- Report failed task at end
-- Suggest resolution
+- Collect all failures
+- Fix all before marking the phase checkpoint complete
 
-### 8. Validation Checkpoints
+**End-of-phase test suite fails**:
+- Do NOT advance to next phase
+- Fix every failing test
+- Re-run full suite until clean
 
-After each phase:
-- Verify required tasks complete
-- Run any automated tests
-- Check implementation matches spec
-- Report status before proceeding
+---
+
+## What NEVER to Do
+
+- NEVER mark a task [X] without running the verification step for that task type
+- NEVER proceed to the next phase if the current phase has any verification failures
+- NEVER write a new UI component without first running the UI Consistency Gate
+- NEVER declare "implementation complete" without running the full test suite and browser E2E
+- NEVER skip the inter-agent QA loop
+- NEVER ignore a TypeScript error — zero errors is the required baseline
+- NEVER assume an import exists without checking the codebase for it
+
+---
 
 ## Output Format
 
@@ -162,105 +329,76 @@ After each phase:
 ## Implementation Progress
 
 ### Phase 1: Setup ✓
-- [X] T001 Create project structure
-- [X] T002 Initialize dependencies
-- [X] T003 Configure linting
+- [X] T001 Create project structure — verified: directory layout matches plan.md ✓
+- [X] T002 Initialize dependencies — verified: composer install clean ✓
+- [X] T003 Configure linting — verified: php-cs-fixer runs without errors ✓
 
 ### Phase 2: Foundational ✓
-- [X] T004 Setup database
-- [X] T005 Implement auth
+- [X] T004 Create jobs migration — verified: migrate --dry-run + migrate PASSED ✓
+- [X] T005 Job model — verified: php -l PASSED, tinker load PASSED ✓
 
-### Phase 3: User Story 1 🔄
-- [X] T006 Create User model
-- [ ] T007 Implement UserService ← Current
-- [ ] T008 Add /users endpoint
+Phase 2 complete — 5/5 tasks verified, 8 tests passing, TypeScript clean
 
-**Status**: In progress (Phase 3, Task T007)
-**Completed**: 6/10 tasks
+### Phase 3: User Story 1 — In Progress
+- [X] T006 JobService — verified: php -l PASSED, method signatures match plan.md ✓
+- [X] T007 POST /api/v1/jobs route — verified: route:list shows route registered ✓
+- [ ] T008 JobsPage frontend component ← Current (running UI Consistency Gate first)
+
+**Status**: In progress (Phase 3, Task T008)
+**Completed**: 7/10 tasks
 ```
 
 ### Completion Summary
 
 ```markdown
-## Implementation Complete
+## Implementation Complete ✓
 
-**Total Tasks**: 25
-**Completed**: 25 (100%)
-**Failed**: 0
+**Tasks**: 25/25 verified
+**Backend Tests**: 47 passing, 0 failing
+**TypeScript**: Clean (0 errors)
+**Browser E2E**: 5/5 flows PASSED
+**Code Review**: APPROVED
 
-### Phases
-- ✓ Setup: 3/3
-- ✓ Foundational: 5/5
-- ✓ User Story 1: 8/8
-- ✓ User Story 2: 6/6
-- ✓ Polish: 3/3
+### Verification Log
+- T001 migration: ran cleanly, table created ✓
+- T002 model: php -l PASSED, tinker load PASSED ✓
+- T003 service: method signatures match plan.md, php -l PASSED ✓
+- T004 route: route:list confirmed, HTTP verb correct ✓
+- T005 tests: php artisan test --filter=JobsTest — 8/8 PASSED ✓
+- T006 frontend: UI Consistency Gate — used <DataTable> from inventory; tsc clean ✓
+- T007 frontend: UI Consistency Gate — no match found, created JobStatusBadge; tsc clean ✓
+- Phase 1 checkpoint: 3/3 tasks verified, 4 tests passing, TypeScript clean
+- Phase 2 checkpoint: 5/5 tasks verified, 12 tests passing, TypeScript clean
+- Phase 3 checkpoint: 8/8 tasks verified, 28 tests passing, TypeScript clean
+- Phase 4 checkpoint: 9/9 tasks verified, 47 tests passing, TypeScript clean
+- Inter-agent QA: test-generator added 8 edge-case tests ✓
+- Inter-agent QA: code-reviewer found 2 issues → fixed → re-tested ✓
+- Inter-agent QA: browser-e2e-tester — 5/5 flows PASSED ✓
 
 ### Files Created
-- src/models/user.ts
-- src/services/user-service.ts
-- src/api/users/route.ts
-...
+- database/migrations/2024_01_01_create_jobs_table.php
+- app/Models/Job.php
+- app/Services/Jobs/JobService.php
+- app/Http/Controllers/Api/V1/JobsController.php
+- tests/Feature/Jobs/JobsTest.php
+- frontend/src/pages/jobs/index.tsx
+- frontend/src/components/jobs/JobStatusBadge.tsx
 
 ### Next Steps
-1. Run tests: `npm test`
-2. Run dev server: `npm run dev`
-3. Review implementation against spec
+1. Deploy to staging: `./deploy.sh staging`
+2. QA sign-off against spec.md acceptance scenarios
+3. Merge PR after sign-off
 ```
 
-## Implementation Patterns
-
-### Create File Task
-```ts
-// T012 [US1] Create User model in src/models/user.ts
-export interface User {
-  id: string
-  email: string
-  name: string
-  createdAt: Date
-}
-
-export const createUser = (data: CreateUserInput): User => {
-  // implementation
-}
-```
-
-### Implement Service Task
-```ts
-// T014 [US1] Implement UserService in src/services/user-service.ts
-import { db } from '@/lib/db'
-import { users } from '@/lib/db/schema'
-
-export class UserService {
-  async create(input: CreateUserInput) {
-    return await db.insert(users).values(input)
-  }
-}
-```
-
-### Add Endpoint Task
-```ts
-// T016 [US1] Add /users endpoint in src/api/users/route.ts
-import { UserService } from '@/services/user-service'
-
-export async function POST(req: Request) {
-  const data = await req.json()
-  const user = await userService.create(data)
-  return Response.json(user, { status: 201 })
-}
-```
+---
 
 ## Key Rules
 
 - Complete Phase N before Phase N+1
-- Mark tasks [X] immediately when done
-- Halt on sequential task failure
-- Verify tests fail before implementing
-- Commit after each task or logical group
-
-## Next Steps
-
-After implementation:
-1. Run full test suite
-2. Compare with original spec
-3. Update documentation if needed
-4. Create PR for review
+- Verify every task before marking [X] — verification type depends on what was written
+- Fix failures immediately, never defer them
+- Run the UI Consistency Gate before every frontend file
+- Run the End-of-Phase Checkpoint after every phase
+- Run the full Inter-Agent QA Loop before declaring implementation complete
+- Halt on sequential task failure until fixed
+- Verify tests FAIL before implementing (TDD approach when tests are included)

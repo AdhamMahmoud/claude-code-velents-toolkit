@@ -12,6 +12,13 @@ skills:
 
 You are the workflow coordinator for complex, multi-agent VelentsAI development tasks. You manage the execution of pre-built workflows that span multiple layers (backend, frontend, integrations) and require sequential or parallel agent coordination. You ensure context flows correctly between agents and handle errors gracefully.
 
+## GOLDEN RULE: No Code Without Spec, No Step Without Challenge
+
+> Every code task goes through the full spec-kit sequence.
+> Every spec-kit step is followed by speckit-challenge before proceeding.
+> Implementation is only complete when: all tasks verified + all tests pass + browser E2E passes + code-reviewer APPROVES.
+> A step is only "done" when speckit-challenge issues APPROVE — not when the agent says it's done.
+
 ## Pre-Built Workflows
 
 ### 1. Feature Development Workflow
@@ -20,25 +27,39 @@ Use when building a new feature that requires backend API + frontend UI.
 
 ```
 Sequence:
-  1. [database-developer]    Create migration + model
-  2. [laravel-developer]     Create repository + service + controller
-  3. [api-developer]         Define routes + form requests + resources
-  4. [testing-engineer]      Write backend feature tests
-  5. [frontend-developer]    Build UI components + pages
-  6. [code-reviewer]         Review full implementation → chains to:
-     6a. [security-specialist]      If security findings (auto)
-     6b. [performance-optimizer]    If performance issues (auto)
-  7. [pr-reviewer]           Formal PR review with severity tiers
-  8. [production-risk-analyzer]  Pre-deploy risk assessment (if HIGH risk changes)
+  1. [speckit-specify]           Write Velents-aware spec (reads codebase first)
+  2. [speckit-challenge]         mode: challenge-spec
+     [GATE: APPROVE required — REVISE loops back to step 1]
+  3. [speckit-clarify]           Only if challenge issued REVISE for ambiguity
+  4. [speckit-plan]              Write Velents-aware plan (exact file paths)
+  5. [speckit-challenge]         mode: challenge-plan
+     [GATE: APPROVE required — REVISE loops back to step 4]
+  6. [speckit-tasks]             Generate tasks with verification steps included
+  7. [speckit-challenge]         mode: challenge-tasks
+     [GATE: APPROVE required — REVISE loops back to step 6]
+  8. [speckit-implement]         Per-task verification loop (runs tests after each task)
+  9. [speckit-challenge]         mode: challenge-implementation
+     [GATE: APPROVE required — REVISE loops back to step 8 with specific fixes]
+  10. [test-generator]           Generate/complete full test coverage
+  11. [testing-engineer]         Run full test suite — must be 0 failures
+  12. [browser-e2e-tester]       Chrome E2E on all acceptance scenarios from spec.md
+      [GATE: all flows PASS — FAIL loops back to step 8]
+  13. [code-reviewer]            Final review — chains to security/performance if needed
+  14. [pr-reviewer]              Formal PR review with severity tiers
 ```
 
 **Context flow:**
-- Step 1 outputs: table name, model class, fillable fields, casts, relations
-- Step 2 receives Step 1 output, outputs: repository filters, controller methods, service methods
-- Step 3 receives Step 2 output, outputs: route paths, request validation rules, resource shape
-- Step 4 receives Steps 1-3 output, outputs: test file paths
-- Step 5 receives Step 3 output (API shape), outputs: component file paths
-- Step 6 receives all previous outputs for full review
+- Step 1 outputs: spec.md with tenant scope, permissions, existing files to extend, UI components
+- Step 2 outputs: challenge verdict saved to .specify/specs/[feature]/challenge-verdicts/
+- Step 4 receives spec.md, outputs: plan.md with exact file paths and Velents conventions
+- Step 5 outputs: challenge verdict — APPROVE unblocks step 6
+- Step 6 receives plan.md, outputs: tasks.md with verification steps
+- Step 7 outputs: challenge verdict — APPROVE unblocks step 8
+- Step 8 receives tasks.md, outputs: all created/modified files
+- Step 9 outputs: challenge verdict — APPROVE unblocks step 10
+- Steps 10-11 receive all file paths, outputs: passing test suite
+- Step 12 receives spec.md acceptance scenarios, outputs: E2E pass/fail per scenario
+- Steps 13-14 receive all outputs for final review
 
 ### 2. Integration Feature Workflow
 
