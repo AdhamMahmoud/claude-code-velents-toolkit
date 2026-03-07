@@ -50,7 +50,10 @@
     "./agents/07-spec-driven/speckit-tasks.md",
     "./agents/07-spec-driven/speckit-checklist.md",
     "./agents/07-spec-driven/speckit-analyze.md",
-    "./agents/07-spec-driven/speckit-implement.md"
+    "./agents/07-spec-driven/speckit-implement.md",
+    "./agents/08-product-management/pm-discovery.md",
+    "./agents/08-product-management/pm-strategist.md",
+    "./agents/08-product-management/pm-executor.md"
   ],
   "commands": [
     "./commands/velents.md",
@@ -72,7 +75,10 @@
     "./commands/security.md",
     "./commands/perf.md",
     "./commands/test.md",
-    "./commands/generate-tests.md"
+    "./commands/generate-tests.md",
+    "./commands/pm-discover.md",
+    "./commands/pm-strategy.md",
+    "./commands/pm-execute.md"
   ],
   "skills": [
     "./skills/velents-architecture/",
@@ -89,6 +95,9 @@
     "./skills/velents-testing/",
     "./skills/velents-core-flows/",
     "./skills/velents-ui-inventory/",
-    "./skills/docs-reference/"
+    "./skills/docs-reference/",
+    "./skills/pm-discovery-frameworks/",
+    "./skills/pm-strategy-frameworks/",
+    "./skills/pm-execution-frameworks/"
   ]
 }

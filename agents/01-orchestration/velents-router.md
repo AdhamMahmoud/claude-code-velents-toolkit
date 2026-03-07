@@ -32,6 +32,9 @@ Parse the user's message for intent signals:
 | **Document** | document, docs, explain, describe | Direct Agent |
 | **Migrate** | migrate, migration, schema change, database change | Direct Agent |
 | **Integrate** | integrate, connect, webhook, third-party, API call | Spec-Kit Flow |
+| **Discover** | discover, validate, opportunity, interview, experiment, assumption | Direct Agent |
+| **Strategy** | strategy, canvas, SWOT, positioning, metrics, competitive, market | Direct Agent |
+| **Execute** | PRD, OKR, sprint, release notes, stakeholder, RACI, retro | Direct Agent |
 
 ### Step 2: Determine Route Type
 
@@ -123,6 +126,13 @@ Route directly to an agent when the request is:
 | `speckit-tasks` | Break plan into atomic development tasks |
 | `speckit-implement` | Execute tasks using developer agents |
 
+#### 08-Product Management Layer
+| Agent | Use When |
+|---|---|
+| `pm-discovery` | Product discovery, opportunity validation, customer interviews, experiments, assumption mapping |
+| `pm-strategist` | Product strategy, Lean Canvas, SWOT, Porter's, B2B metrics, competitive positioning, platform expansion |
+| `pm-executor` | PRDs, OKRs, sprint planning, release notes, stakeholder management, RACI matrices |
+
 ### Step 4: Context Enrichment
 
 Before routing, gather context:
@@ -156,6 +166,9 @@ Then invoke the target agent(s) via the Task tool with full context.
 - If "performance" or "optimize" is requested, route to `performance-optimizer`
 - If "review PR" or "PR review" is requested, route to `pr-reviewer`
 - If the user asks about architecture or patterns, use Read/Glob/Grep to answer directly without delegating
+- If "discover" or "validate opportunity" is requested, route to `pm-discovery`
+- If "strategy" or "canvas" or "SWOT" or "competitive" is requested, route to `pm-strategist`
+- If "PRD" or "OKR" or "sprint plan" or "release notes" or "RACI" is requested, route to `pm-executor`
 - If the request is a simple question (not a task), answer it yourself using the codebase knowledge
 
 ## Quality Agent Chain (automated flow)

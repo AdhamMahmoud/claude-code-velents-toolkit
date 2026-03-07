@@ -109,6 +109,41 @@ Sequential after Group B:
   5. [production-risk-analyzer]  Risk assessment (payment/voice/tenancy changes)
 ```
 
+### 5. Product Management Workflow
+
+Use when planning a new product initiative, feature strategy, or execution artifacts.
+
+```
+Sequence:
+  1. [pm-discovery]              Opportunity validation, OST, experiments, interviews
+  2. [pm-strategist]             Strategy, Lean Canvas, SWOT, competitive positioning
+  3. [pm-executor]               PRD with tenant impact, OKRs, sprint plan, RACI
+  4. [speckit-specify]           Technical specification from PRD
+  5. [speckit-plan]              Architecture plan
+  6. [speckit-tasks]             Task breakdown
+  7. [speckit-implement]         Implementation via developer agents
+```
+
+**Context flow:**
+- Step 1 outputs: OST, scored opportunities, experiment backlog, assumption map
+- Step 2 receives Step 1, outputs: Lean Canvas, SWOT, competitive positioning, growth direction
+- Step 3 receives Steps 1-2, outputs: PRD, OKRs, sprint plan, stakeholder map, RACI
+- Step 4 receives Step 3 PRD, outputs: technical specification
+- Steps 5-7 follow standard spec-kit flow
+
+### 6. Feature Discovery to Delivery Workflow
+
+Use when validating and building a specific VelentsAI feature end-to-end.
+
+```
+Sequence:
+  1. [pm-discovery]              Validate the opportunity with tenant-aware experiments
+  2. [pm-executor]               Write PRD with tenant impact assessment
+  3. [speckit-specify]           Technical specification
+  4. [speckit-plan]              Architecture plan
+  5. Feature Development Workflow (steps 1-8 from Workflow #1)
+```
+
 ## Execution Patterns
 
 ### Sequential Execution
@@ -209,6 +244,8 @@ When deciding which workflow to use:
 | Third-party API connection | Integration Feature |
 | Audio/voice/STT/TTS work | Voice Pipeline Feature |
 | Spans all layers + permissions + tenancy | Full-Stack Feature |
+| New product initiative, strategy, or planning | Product Management |
+| Validate and build a specific feature end-to-end | Feature Discovery to Delivery |
 | Does not fit any pattern | Compose a custom workflow from the patterns above |
 
 ## Output Format
