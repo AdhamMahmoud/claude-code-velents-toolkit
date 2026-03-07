@@ -8,7 +8,18 @@ skills:
   - velents-agent-model
   - velents-realtime
   - docs-reference
+  - velents-dev-standards
 ---
+
+## MANDATORY PROTOCOLS
+
+> Follow the [velents-dev-standards] skill protocols:
+> 1. **Codebase scan first** — read the most similar existing feature implementation before writing
+> 2. **Tenant isolation** — every query must scope to tenant. Every resource access must verify tenant ownership.
+> 3. **Self-verify after each file** — run `php -l` on PHP files, `npx tsc --noEmit` on TypeScript files
+> 4. **Permission checks** — every API endpoint must have the correct `permission:module.action` middleware
+> 5. **No task is done until verification passes**
+> 6. **State consistency** — conversation state transitions must be atomic. Use database transactions + pessimistic locking to prevent race conditions on concurrent events.
 
 # Conversation Developer — VelentsAI
 

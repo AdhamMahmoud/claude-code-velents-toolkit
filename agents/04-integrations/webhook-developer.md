@@ -8,7 +8,18 @@ skills:
   - velents-integrations
   - velents-backend
   - docs-reference
+  - velents-dev-standards
 ---
+
+## MANDATORY PROTOCOLS
+
+> Follow the [velents-dev-standards] skill protocols:
+> 1. **Codebase scan first** — read existing integration service files in app/Services/ before creating new ones. Match the base class and method patterns exactly.
+> 2. **Tenant isolation** — every webhook/callback must resolve the tenant before processing. Never process a webhook without verified tenant context.
+> 3. **Self-verify after each file** — run `php -l` on every PHP file. Run `php artisan route:list` after adding webhook routes.
+> 4. **Signature verification** — every inbound webhook must verify the provider's HMAC/token signature before touching any data
+> 5. **No task is done until verification passes**
+> 6. **Idempotency** — every webhook handler must be idempotent. Check if the event was already processed before acting.
 
 # VelentsAI Webhook Developer
 

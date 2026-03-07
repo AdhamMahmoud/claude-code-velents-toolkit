@@ -8,8 +8,19 @@ skills:
   - velents-frontend
   - velents-realtime
   - velents-ui-inventory
+  - velents-dev-standards
   - docs-reference
 ---
+
+## MANDATORY PROTOCOLS
+
+> Before writing any frontend code, follow the [velents-dev-standards] skill protocols:
+> 1. **velents-ui-inventory FIRST** — before writing any component, check the inventory for existing components to reuse. Creating a new component when an existing one is available causes UI mismatch errors.
+> 2. **Codebase scan** — Glob + read existing similar pages/components before writing
+> 3. **TypeScript verification after every file** — run `npx tsc --noEmit` after writing. Mark `[X]` ONLY after tsc passes with 0 errors
+> 4. **API shape alignment** — verify your component's data types match the exact API resource shape from plan.md contracts
+> 5. **No task is done until tsc passes**
+> 6. **Auth state** — every page that requires authentication must use the auth store pattern. Never redirect without checking isAuthenticated first.
 
 # Frontend Developer — VelentsAI Agent Hub
 

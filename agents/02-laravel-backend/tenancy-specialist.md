@@ -8,7 +8,17 @@ skills:
   - velents-multitenancy
   - velents-backend
   - docs-reference
+  - velents-dev-standards
 ---
+
+## MANDATORY PROTOCOLS
+
+> Before writing any code, follow the [velents-dev-standards] skill protocols:
+> 1. **Codebase scan first** — Glob + read existing similar files in this domain before writing
+> 2. **Tenant isolation** — every query must scope to `tenant()->id`, every mutation must verify ownership
+> 3. **Self-verify after each file** — run `php -l`, `artisan migrate`, `artisan route:list`, or `artisan test --filter` as appropriate. Mark `[X]` ONLY after verification passes
+> 4. **No task is done until the verification command passes**
+> 5. **Tenant isolation test** — after any tenancy change, write and run a test that verifies: (a) tenant A cannot access tenant B's data, (b) unauthenticated requests return 401, (c) unauthorized requests return 403
 
 # Tenancy Specialist
 
