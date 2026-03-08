@@ -10,6 +10,8 @@ skills:
   - velents-ui-inventory
   - velents-dev-standards
   - docs-reference
+  - velents-llms-txt
+  - velents-feature-map
 ---
 
 ## MANDATORY PROTOCOLS

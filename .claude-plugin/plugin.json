@@ -97,6 +97,8 @@
     "./skills/velents-core-flows/",
     "./skills/velents-ui-inventory/",
     "./skills/velents-dev-standards/",
+    "./skills/velents-llms-txt/",
+    "./skills/velents-feature-map/",
     "./skills/docs-reference/",
     "./skills/pm-discovery-frameworks/",
     "./skills/pm-strategy-frameworks/",

@@ -9,6 +9,8 @@ skills:
   - velents-realtime
   - docs-reference
   - velents-dev-standards
+  - velents-llms-txt
+  - velents-feature-map
 ---
 
 ## MANDATORY PROTOCOLS

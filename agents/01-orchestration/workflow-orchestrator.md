@@ -6,6 +6,8 @@ model: opus
 skills:
   - velents-core-flows
   - velents-architecture
+  - velents-llms-txt
+  - velents-feature-map
 ---
 
 # VelentsAI Workflow Orchestrator
@@ -33,6 +35,8 @@ You are the fully autonomous workflow engine for VelentsAI development. You rece
 - "Should I run the tests?" — always run them
 - Routine REVISE verdicts — fix and retry automatically
 
+> **Phase 0 is always run by the orchestrator itself — no Task tool needed. Read the skills directly using Read tool on the skill files.**
+
 ## GOLDEN RULE: No Code Without Spec, No Step Without Challenge
 
 > Every code task goes through the full spec-kit sequence.
@@ -48,6 +52,19 @@ Use when building a new feature that requires backend API + frontend UI.
 
 ```
 Sequence:
+  0. [CONTEXT LOADING — orchestrator runs this directly, no agent needed]
+     a. Load velents-architecture skill → understand 5-layer system and feature map
+     b. Load velents-feature-map skill → run the Pre-Code Impact Checklist
+        → identify which existing features are at risk from this change
+        → if any 🔴 CRITICAL shared resources are touched, read their implementations
+     c. Identify all technologies the feature will use (from the request + architecture)
+     d. Fetch llms.txt for each technology via WebFetch (velents-llms-txt skill)
+        → Next.js (if frontend), Laravel (if backend), shadcn (if UI), etc.
+     e. Load velents-ui-inventory (if frontend work involved)
+     f. Summarize context: "Feature touches X module, risks Y existing feature,
+        using technologies A/B/C with docs fetched"
+     [GATE: context loaded and impact assessed before any spec is written]
+
   1. [speckit-specify]           Write Velents-aware spec (reads codebase first)
   2. [speckit-challenge]         mode: challenge-spec
      [GATE: APPROVE required — REVISE loops back to step 1]

@@ -140,3 +140,44 @@ A task is only `[X]` when:
 - ✅ No new PHP syntax errors
 
 "I wrote it and it looks right" is NOT sufficient. The verification command must run and pass.
+
+---
+
+## Protocol 7: Fetch llms.txt Before Using Any Library (MANDATORY)
+
+Before writing code that uses any library in the Velents stack, fetch its llms.txt using WebFetch:
+
+Load the `velents-llms-txt` skill to find the correct URL for each technology.
+
+```
+# Example: before writing a Next.js page
+WebFetch: https://nextjs.org/llms.txt — "App Router patterns for Next.js 16, server components, data fetching"
+
+# Example: before writing a Laravel service
+WebFetch: https://laravel.com/llms.txt — "Service class patterns in Laravel 12, job dispatch"
+
+# Example: before writing TanStack Query hooks
+WebFetch: https://tanstack.com/query/latest/llms.txt — "useQuery in v5, isPending vs isLoading"
+```
+
+**Why**: Training data has outdated patterns. Tailwind v4, Next.js 16, React 19, TanStack Query v5 all have breaking changes from versions in training data. Fetching ensures you use current APIs.
+
+Do NOT skip this for "simple" code. An incorrect hook pattern or deprecated API will fail silently or produce subtle bugs.
+
+---
+
+## Protocol 8: Load Full Architecture Context Before Writing (MANDATORY)
+
+Before writing any code, load the `velents-feature-map` skill and answer the impact checklist:
+
+1. Which existing features use the same tables/services/events you're about to touch?
+2. Does your change alter any Shared Resources (marked 🔴 CRITICAL in the map)?
+3. If yes → read the full implementation of the affected features before writing
+
+This prevents the most costly type of bug: a change that works for the new feature but silently breaks an existing one.
+
+**Minimum context to load before any code task**:
+- `velents-architecture` skill — understand the 5-layer system
+- `velents-feature-map` skill — identify what your change risks breaking
+- `velents-llms-txt` skill — fetch docs for each library you'll use
+- `velents-ui-inventory` skill — (frontend tasks only) find existing components to reuse
