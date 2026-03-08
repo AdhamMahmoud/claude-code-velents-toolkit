@@ -113,7 +113,7 @@ Phase 2: Foundational
 └── End-of-Phase Checkpoint: foundation verified, tests clean
 
 Phase 3+: User Stories
-├── UI Consistency Gate before any frontend task
+├── PROTOTYPE GATE (before ANY frontend task — see below)
 ├── Tests first (if requested) — must FAIL before implementing
 ├── Models → Services → Endpoints → Frontend
 ├── Verify each task immediately after writing it
@@ -130,8 +130,67 @@ Inter-Agent QA Loop (after all phases)
 ├── Full test suite run
 ├── code-reviewer agent
 ├── Fix any issues found
-└── browser-e2e-tester via Chrome
+├── browser-e2e-tester via Chrome (functional flows)
+└── ui-pixel-validator via Chrome (visual pixel validation against prototype)
 ```
+
+---
+
+## PROTOTYPE GATE — Mandatory Before Any Frontend Task
+
+> **Never write a single line of frontend code without first re-reading the prototype for that screen. The spec's Prototype section is the source of truth. Verify it is complete before starting.**
+
+### Before the first frontend task runs:
+
+1. **Read `spec.md → ## Prototype` section** — is it complete?
+   - All states confirmed? (loading/empty/error/hover/mobile/RTL)
+   - All interactions confirmed?
+   - All prototype gaps resolved?
+   - If ANY field is "Pending" → **STOP. Go back to PM/designer. Get answers before proceeding.**
+
+2. **Load `velents-ui-prototype` skill** — re-read Phase 4 (Component Map)
+   - Confirm the component map is accurate against the codebase today
+   - If a component listed as REUSE no longer exists or has changed → update the map
+
+3. **If prototype was provided as a URL** — open it in Chrome now:
+   ```
+   mcp__claude-in-chrome__navigate → [prototype URL]
+   ```
+   Keep it open in a tab throughout frontend implementation. Refer to it for every layout/spacing/color decision.
+
+4. **If prototype was screenshots/images** — read them with the Read tool before starting each screen.
+
+### During frontend implementation (per-component rule):
+
+Before writing each new component or page:
+- Look at the corresponding prototype frame
+- Note exact spacing, colors, and states
+- Write against the prototype — not against memory or assumption
+
+After writing each component:
+- Run `tsc --noEmit` (zero errors before marking [X])
+- Visually check: does the rendered output match the prototype? (use Chrome if dev server is running)
+
+### After all frontend tasks complete:
+
+Invoke `ui-pixel-validator` as a Task before declaring implementation done:
+
+```
+Task tool:
+  subagent_type: velents-toolkit:ui-pixel-validator
+  prompt: |
+    Validate the implementation of [Feature Name] against the prototype.
+
+    Prototype: [URL or "screenshots in .specify/specs/[feature]/prototype/"]
+    Implementation URL: http://localhost:3000/[route]
+    Spec: .specify/specs/[feature]/spec.md
+
+    Validate ALL screens and states listed in spec.md → ## Prototype section.
+    Save report to: .specify/specs/[feature]/ui-validation-[timestamp].md
+    Issue PASS or FAIL verdict.
+```
+
+**Do NOT invoke `speckit-challenge (mode: challenge-implementation)` until `ui-pixel-validator` issues PASS.**
 
 ---
 

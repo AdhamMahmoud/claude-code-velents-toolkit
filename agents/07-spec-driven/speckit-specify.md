@@ -22,7 +22,30 @@ Transform user feature descriptions into comprehensive specifications that:
 
 ## Input
 
-Natural language feature description from user.
+Natural language feature description from user. May include:
+- Prototype URL (Figma, InVision, Framer, screenshots)
+- PM requirements document
+- User stories or acceptance criteria
+
+## PROTOTYPE PROTOCOL — MANDATORY IF PROTOTYPE IS PROVIDED
+
+> If a prototype (Figma, screenshots, design file, video, or any visual artifact) is provided, **read it completely before writing the spec**. The spec must encode the prototype — not abstract away from it.
+
+### Step 0: Read and Understand the Prototype (run BEFORE Step 1)
+
+Load the `velents-ui-prototype` skill and follow Phase 1 + Phase 2 completely:
+
+1. **Open the prototype** using browser automation or Read tool (for images/PDFs)
+2. **Document every screen**: layout, typography, colors, spacing, states (loading/empty/error/hover), interactions, responsive behavior
+3. **Identify all gaps**: states not shown, interactions not specified, copy not finalized, edge cases not shown
+4. **Stop and ask the PM/designer** — use Phase 3 question format from the skill
+   - Group questions by category (States, Interactions, Copy, Responsive)
+   - Give 2–3 options with trade-offs + recommendation for each
+   - Do NOT proceed until all questions are answered
+
+**DO NOT write the spec until prototype gaps are resolved.** A spec written from an incomplete prototype understanding will produce wrong implementation.
+
+After questions are answered, include a `## Prototype` section in the spec (see output template below).
 
 ## Workflow
 
@@ -82,6 +105,76 @@ Generate specification at `.specify/specs/[feature-name]/spec.md`:
 **Feature Branch**: `[###-feature-name]`
 **Created**: [DATE]
 **Status**: Draft
+
+---
+
+## Prototype
+
+<!-- If a prototype was provided, populate ALL fields below from it. If no prototype: mark "None provided". -->
+<!-- Never leave this blank if a prototype exists — the spec must encode the design. -->
+
+### Screens Documented
+<!-- List every screen/state that exists in the prototype. -->
+| Screen | States shown | States NOT shown (need confirmation) |
+|---|---|---|
+| [Screen name] | Default, Loading | Empty state, Error state |
+
+### Layout & Spacing (per screen)
+<!-- Exact values extracted from prototype. Must be specific enough to implement without re-reading the prototype. -->
+- Page layout: [full-width / sidebar + content / split panel]
+- Page padding: [e.g., px-6 py-4]
+- Card padding: [e.g., p-6]
+- Gap between cards: [e.g., gap-4]
+- Max content width: [e.g., max-w-7xl]
+
+### Typography
+<!-- Map prototype text to Tailwind + semantic token equivalents. -->
+| Element | Size | Weight | Color token |
+|---|---|---|---|
+| Page heading | text-2xl | font-semibold | text-foreground |
+| Card title | text-base | font-medium | text-foreground |
+| Body text | text-sm | font-normal | text-muted-foreground |
+| Labels | text-xs | font-medium | text-muted-foreground |
+
+### Color Tokens Used
+<!-- All colors must use semantic tokens, not raw Tailwind colors. -->
+- Primary buttons: `bg-primary text-primary-foreground`
+- Page background: `bg-background`
+- Card background: `bg-card`
+- Borders: `border-border`
+- Status colors: [badge variants: default / secondary / destructive / outline]
+
+### Components (from velents-ui-inventory)
+<!-- Map every prototype element to an existing component or justify a new one. -->
+| Prototype element | Existing component | New component needed? |
+|---|---|---|
+| [e.g., data table] | `DataTable` from `components/ui/data-table` | No |
+| [e.g., custom toggle] | None | Yes — [justification] |
+
+### All States Confirmed
+<!-- All states must be confirmed before implementation starts. Mark Y/N/Pending. -->
+| State | Confirmed | Design |
+|---|---|---|
+| Loading | Y / N / Pending | [skeleton / spinner / nothing] |
+| Empty | Y / N / Pending | [description of empty state] |
+| Error | Y / N / Pending | [toast / inline / error page] |
+| Hover | Y / N / Pending | [description] |
+| Mobile | Y / N / Pending | [layout change description] |
+| RTL | Y / N / Pending | [any special RTL handling] |
+
+### Interactions Confirmed
+<!-- All interactions must be confirmed before implementation. -->
+| Action | Result | Confirmed |
+|---|---|---|
+| [Row click] | [Navigate to detail / open sheet / open dialog] | Y / Pending |
+| [Delete] | [Confirmation dialog → delete → toast] | Y / Pending |
+| [Filter] | [Client-side / API call] | Y / Pending |
+
+### Prototype Gaps Resolved
+<!-- List every question that was asked in Phase 3 and the confirmed answer. -->
+| Question | Answer | Decided by |
+|---|---|---|
+| [Question] | [Answer] | PM / Designer / Tech |
 
 ---
 

@@ -91,9 +91,13 @@ Sequence:
      d. Fetch llms.txt for each technology via WebFetch (velents-llms-txt skill)
         → Next.js (if frontend), Laravel (if backend), shadcn (if UI), etc.
      e. Load velents-ui-inventory (if frontend work involved)
-     f. Summarize context: "Feature touches X module, risks Y existing feature,
-        using technologies A/B/C with docs fetched"
-     [GATE: context loaded and impact assessed before any spec is written]
+     f. **Read the prototype** (if provided — Figma URL, screenshots, design files):
+        → Load velents-ui-prototype skill → follow Phase 1 (read all screens) + Phase 2 (identify gaps)
+        → Ask PM the Phase 3 questions BEFORE writing spec
+        → Do NOT proceed to Step 1 until all prototype gaps are answered
+     g. Summarize context: "Feature touches X module, risks Y existing feature,
+        using technologies A/B/C with docs fetched, prototype read with N states confirmed"
+     [GATE: context loaded, prototype understood, all gaps answered before any spec is written]
 
   1. [speckit-specify]           Write Velents-aware spec (reads codebase first)
   2. [speckit-challenge]         mode: challenge-spec
@@ -112,8 +116,10 @@ Sequence:
   11. [testing-engineer]         Run full test suite — must be 0 failures
   12. [browser-e2e-tester]       Chrome E2E on all acceptance scenarios from spec.md
       [GATE: all flows PASS — FAIL loops back to step 8]
-  13. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
-  14. [pr-reviewer]              Formal PR review with severity tiers
+  13. [ui-pixel-validator]       Chrome pixel-perfect validation against prototype (if prototype provided)
+      [GATE: PASS required — FAIL loops back to step 8 with exact discrepancy list]
+  14. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
+  15. [pr-reviewer]              Formal PR review with severity tiers
 ```
 
 **Context flow:**
