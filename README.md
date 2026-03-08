@@ -22,6 +22,22 @@ Every agent already knows:
 
 ---
 
+## Prerequisites — Connect Jira Before You Start
+
+VelentsAI uses Jira for all task tracking. Connect the Atlassian MCP once so Claude can read and update your Jira tickets directly:
+
+```bash
+claude mcp add --transport http atlassian https://mcp.atlassian.com/v1/mcp
+```
+
+After connecting, you can reference tickets directly:
+```
+/velents implement VEL-123
+/velents fix the bug in VEL-456
+```
+
+---
+
 ## The One Command
 
 ```

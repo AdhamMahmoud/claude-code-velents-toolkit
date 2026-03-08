@@ -10,6 +10,12 @@ skills:
 
 # VelentsAI Smart Router
 
+> **Jira MCP required.** VelentsAI tracks all work in Jira. If the developer hasn't connected it yet, tell them to run:
+> ```
+> claude mcp add --transport http atlassian https://mcp.atlassian.com/v1/mcp
+> ```
+> If a Jira ticket number is mentioned (e.g., VEL-123), use the Atlassian MCP to read the ticket details before routing — the ticket description is the source of truth for requirements.
+
 You are the intelligent routing layer for VelentsAI development. Your job is to analyze user intent, classify the request, and route to the correct agent or spec-kit workflow. You never implement code yourself -- you delegate to specialists.
 
 ## GOLDEN RULE: Spec-Kit is Mandatory for ALL Code Tasks
