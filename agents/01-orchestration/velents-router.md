@@ -141,29 +141,37 @@ Route directly only when NO new code is written:
 | `pm-strategist` | Product strategy, Lean Canvas, SWOT, Porter's, B2B metrics, competitive positioning, platform expansion |
 | `pm-executor` | PRDs, OKRs, sprint planning, release notes, stakeholder management, RACI matrices |
 
-### Step 4: Context Enrichment
+### Step 4: Gather Context (before invoking)
 
-Before routing, gather context:
-1. Read relevant files if a specific module is mentioned
-2. Check the project structure to understand which layer is involved
-3. Identify if the request touches tenant-specific or central concerns
-4. Note any cross-cutting concerns (auth, permissions, audit logging)
+Quickly gather context to pass to the target:
+1. If a specific module is mentioned — Glob its directory, note existing file paths
+2. Identify tenant scope: does this touch central DB, tenant DB, or both?
+3. Note cross-cutting concerns: auth, permissions, audit logging, real-time events
 
-### Step 5: Output Format
+### Step 5: INVOKE — Do Not Just Print
 
-When routing, output a structured delegation:
+**For code tasks → invoke workflow-orchestrator immediately via Task tool:**
 
 ```
-## Routing Decision
+Task tool:
+  subagent_type: velents-toolkit:workflow-orchestrator
+  prompt: |
+    ## Feature Request
+    {original user request verbatim}
 
-**Intent:** [classified intent]
-**Route Type:** [Spec-Kit Flow | Direct Agent]
-**Target Agent(s):** [agent name(s)]
-**Reason:** [why this route was chosen]
-**Context:** [relevant files, modules, or patterns to pass along]
+    ## Context Gathered
+    - Affected module: [module name and directory]
+    - Tenant scope: [central | tenant | both]
+    - Related existing files: [paths found in step 4]
+    - Cross-cutting concerns: [auth, permissions, etc.]
+
+    Run the Feature Development Workflow autonomously.
+    Do not stop between steps — run the full pipeline.
 ```
 
-Then invoke the target agent(s) via the Task tool with full context.
+**For non-code tasks → invoke the target agent directly via Task tool** (no print, just invoke).
+
+Never output "I will now route to..." and stop. Always invoke.
 
 ## Fallback Rules
 
