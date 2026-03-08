@@ -5,18 +5,37 @@ description: llms.txt URLs for every technology in the Velents stack. Fetch the 
 
 # Velents Tech Stack — llms.txt Directory
 
-## THE RULE: Fetch Before You Write
+## THE RULE: Fetch Only What You Will Actually Write
 
-Before writing any code that uses a library, fetch its llms.txt. This prevents:
-- Using deprecated APIs (e.g., Next.js 13 patterns in a Next.js 16 codebase)
-- Missing new features that simplify the implementation
-- Breaking changes in minor versions that affect the Velents codebase
+> **Token budget rule: do NOT fetch all docs upfront. Fetch ONLY the libraries you will write code for in this specific task.**
+> ElevenLabs llms.txt = 90KB. Tiptap = 59KB. Fetching both for a backend migration wastes ~150KB of context.
+
+### Scope → Fetch Map (use this to decide what to fetch)
+
+| Task scope | Fetch these | Skip these |
+|---|---|---|
+| Backend only (controller/service/migration) | Laravel | Everything else |
+| Backend + permissions | Laravel, Spatie | Everything else |
+| Backend + WebSocket events | Laravel, Reverb | Everything else |
+| Backend + multi-tenancy | Laravel, stancl/tenancy | Everything else |
+| Frontend page/component | Next.js, React | Backend, voice, integrations |
+| Frontend + data fetching | Next.js, React, TanStack Query | Backend, voice |
+| Frontend + forms | Next.js, React, React Hook Form, Zod | Backend, voice |
+| Frontend + data table | Next.js, React, TanStack Table | Backend, voice |
+| Frontend + state store | Next.js, Zustand | Backend, voice |
+| Frontend + rich text | Next.js, Tiptap | Everything else |
+| Frontend + i18n/RTL | Next.js, next-intl | Everything else |
+| Voice pipeline | ElevenLabs, LiveKit | Frontend framework, Tiptap |
+| Payment/billing | Stripe | Voice, frontend framework |
+| Tests only | PHPUnit (backend) or Vitest | Everything else |
+
+**Rule**: If a library isn't in the "Fetch these" column for your task scope — do NOT fetch it.
 
 ### How to fetch
-Use the WebFetch tool with the llms.txt URL and a targeted prompt:
+Use the WebFetch tool with a targeted prompt — not "give me everything":
 ```
 WebFetch: https://nextjs.org/llms.txt
-Prompt: "What are the current App Router patterns for [your specific task]? Any breaking changes from v15 to v16?"
+Prompt: "App Router page with server-side data fetching in Next.js 16 — specific pattern, not overview"
 ```
 
 ---

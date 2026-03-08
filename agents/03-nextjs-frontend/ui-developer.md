@@ -9,7 +9,6 @@ skills:
   - velents-ui-inventory
   - velents-dev-standards
   - velents-ui-prototype
-  - docs-reference
   - velents-llms-txt
   - velents-feature-map
 ---

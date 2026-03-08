@@ -7,7 +7,6 @@ skills:
   - velents-core-flows
   - velents-payment
   - velents-backend
-  - docs-reference
   - velents-dev-standards
   - velents-llms-txt
   - velents-feature-map

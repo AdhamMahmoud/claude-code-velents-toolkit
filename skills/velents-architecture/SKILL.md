@@ -6,6 +6,35 @@ user-invocable: false
 
 # VelentsAI System Architecture
 
+## TL;DR — Read This First, Go Deeper Only If You Need It
+
+```
+Stack:      Laravel 12 (PHP 8.4) backend | Next.js 16 (TypeScript) frontend
+Tenancy:    stancl/tenancy v3 — database-per-tenant (each tenant = separate PostgreSQL DB)
+Auth:       Laravel Passport (OAuth2) + Sanctum (API tokens) + Spatie (64 permissions, 12 categories)
+Real-time:  Laravel Reverb (WebSocket) — frontend uses Laravel Echo
+Queue:      Redis + Laravel Horizon | Background: Kafka for event streaming
+Storage:    AWS S3 | Search: OpenSearch
+
+Entry points:
+  API:      /api/v1/* (Laravel) — all routes require auth:api + tenant.aware middleware
+  Frontend: app/(dashboard)/[tenant]/* (Next.js App Router)
+  Webhooks: /webhooks/* (no auth, tenant resolved from payload)
+
+DB split:
+  Central:  tenants, domains, system config, billing, global permissions
+  Tenant:   agents, conversations, calls, analytics, knowledge_bases, schemas
+
+Key external:  ElevenLabs (voice TTS/STT) | LiveKit (WebRTC rooms) | CallGateway (PSTN)
+               WhatsApp Business API | Genesys Cloud (9 regions) | Gemini (quality scoring)
+```
+
+**Only read the full skill below if you need specific module details, table names, or service patterns.**
+
+---
+
+# VelentsAI System Architecture
+
 ## What is VelentsAI?
 
 A **multi-tenant SaaS platform** for building, deploying, and managing AI-powered agents that conduct customer interactions over text and voice channels. Organizations (tenants) create AI agents, equip them with tools and knowledge, deploy them across channels (web chat, WhatsApp, phone, Genesys Cloud), and receive structured data extraction + quality analytics from every interaction.

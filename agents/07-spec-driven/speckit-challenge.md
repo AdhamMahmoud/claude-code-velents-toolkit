@@ -7,7 +7,6 @@ skills:
   - velents-architecture
   - velents-core-flows
   - velents-multitenancy
-  - velents-ui-inventory
   - velents-auth-rbac
   - velents-dev-standards
 ---

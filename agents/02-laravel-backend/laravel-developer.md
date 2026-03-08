@@ -8,7 +8,6 @@ skills:
   - velents-backend
   - velents-multitenancy
   - velents-auth-rbac
-  - docs-reference
   - velents-dev-standards
   - velents-llms-txt
   - velents-feature-map

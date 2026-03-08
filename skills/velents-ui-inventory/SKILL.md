@@ -6,6 +6,39 @@ user-invocable: false
 
 # VelentsAI UI Component Inventory — REUSE FIRST
 
+## TL;DR — Check This Table Before Reading Further
+
+| Need | Use This | Import |
+|------|----------|--------|
+| Data list/table | `DataTable` | `@/components/ui/data-table` |
+| Container/box | `Card` + `CardHeader/Content/Footer` | `@/components/ui/card` |
+| Status label | `Badge` variant: default/secondary/destructive/outline | `@/components/ui/badge` |
+| Any button | `Button` variant: default/outline/ghost/destructive | `@/components/ui/button` |
+| Modal popup | `Dialog` + `DialogContent/Header/Footer` | `@/components/ui/dialog` |
+| Slide-in panel | `Sheet` | `@/components/ui/sheet` |
+| Dropdown menu | `DropdownMenu` | `@/components/ui/dropdown-menu` |
+| Form fields | `Form` + `FormField/Item/Label/Control/Message` + `Input/Select/Textarea` | `@/components/ui/form` |
+| Loading state | `Skeleton` | `@/components/ui/skeleton` |
+| Toast/notification | `toast()` from `sonner` | already installed |
+| Page sections | `Tabs` + `TabsList/Trigger/Content` | `@/components/ui/tabs` |
+| Confirmation | `AlertDialog` | `@/components/ui/alert-dialog` |
+| Tooltip | `Tooltip` + `TooltipTrigger/Content` | `@/components/ui/tooltip` |
+| Command palette | `Command` | `@/components/ui/command` |
+| Loading spinner | `Loader2` icon + `animate-spin` | `lucide-react` |
+| Empty state | `EmptyState` (custom) | `@/components/shared/empty-state` |
+| Page header | `PageHeader` (custom) | `@/components/shared/page-header` |
+
+**Color tokens** (NEVER use raw Tailwind colors like `bg-blue-500`):
+`bg-primary` `bg-secondary` `bg-card` `bg-background` `bg-muted`
+`text-foreground` `text-muted-foreground` `text-primary-foreground`
+`border-border` `ring-ring`
+
+**RTL**: Use logical properties — `ms-` `me-` `ps-` `pe-` `start-` `end-` `text-start` `text-end`
+
+**Only read the full inventory below if you can't find what you need in the table above.**
+
+---
+
 > **RULE #1**: NEVER create a new component when an existing one can do the job.
 > **RULE #2**: NEVER invent new colors, spacing, or patterns. Use what exists.
 > **RULE #3**: Keep it simple. No over-designing. No over-engineering.

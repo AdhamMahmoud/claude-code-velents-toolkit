@@ -177,10 +177,65 @@ Before writing any code, load the `velents-feature-map` skill and answer the imp
 This prevents the most costly type of bug: a change that works for the new feature but silently breaks an existing one.
 
 **Minimum context to load before any code task**:
-- `velents-architecture` skill — understand the 5-layer system
-- `velents-feature-map` skill — identify what your change risks breaking
-- `velents-llms-txt` skill — fetch docs for each library you'll use
-- `velents-ui-inventory` skill — (frontend tasks only) find existing components to reuse
+- `velents-architecture` skill — read TL;DR block only unless you need module details
+- `velents-feature-map` skill — read TL;DR shared-resource table first; full map only if your resource appears in it
+- `velents-llms-txt` skill — fetch ONLY the libraries your task will write code for (see scope table in that skill)
+- `velents-ui-inventory` skill — (frontend tasks only) read TL;DR component table first; full inventory only if not found
+
+---
+
+## Protocol 10: Token Budget — Load Only What You Need (MANDATORY)
+
+> **Every skill you load and every llms.txt you fetch consumes context. Wasted context = shorter working memory = worse output.**
+
+### Classify your task scope FIRST — then decide what to load
+
+```
+CLASSIFY: backend-only | frontend-only | full-stack | integration | fix | pm
+
+backend-only:
+  Load: velents-architecture (TL;DR), velents-backend, velents-multitenancy, velents-feature-map (TL;DR)
+  llms.txt: Laravel only (+ Spatie/Reverb/Tenancy if specifically used)
+  Skip: velents-ui-inventory, velents-ui-prototype, velents-frontend, velents-realtime
+
+frontend-only:
+  Load: velents-architecture (TL;DR), velents-frontend, velents-ui-inventory (TL;DR), velents-feature-map (TL;DR)
+  llms.txt: Next.js + React + whatever UI library is used (NOT ElevenLabs, NOT Laravel)
+  Skip: velents-backend, velents-multitenancy, velents-auth-rbac, velents-testing (PHPUnit sections)
+
+full-stack:
+  Load: all, but backend skills first, frontend skills when frontend phase starts
+  llms.txt: backend libs when writing backend, frontend libs when writing frontend
+
+integration:
+  Load: velents-architecture (TL;DR), velents-integrations, velents-core-flows
+  llms.txt: only the specific service being integrated (ElevenLabs OR LiveKit, not both unless both used)
+  Skip: velents-ui-inventory, velents-ui-prototype (unless config UI needed)
+
+fix (targeted bug):
+  Load: only the skill for the specific module being fixed
+  llms.txt: only if the bug involves a library API that may have changed
+  Skip: everything else — you know what file you're touching
+
+pm (no code):
+  Load: pm-discovery-frameworks, pm-strategy-frameworks, or pm-execution-frameworks
+  Skip: all code skills, all llms.txt
+```
+
+### TL;DR-First Rule for Heavy Skills
+
+All heavy skills have a `## TL;DR` block at the top. Always read the TL;DR first. Only read the full skill if:
+- The TL;DR doesn't contain what you need
+- You need specific method signatures, table columns, or component props
+
+### Context Passing — Keep It Slim
+
+When passing context between steps, include ONLY:
+- File paths created/modified (not file contents)
+- Class names, method signatures, table names, route paths decided so far
+- Specific constraints for the next step
+
+Do NOT pass: full file contents, full spec text, full plan text — the next agent can read these from disk.
 
 ---
 

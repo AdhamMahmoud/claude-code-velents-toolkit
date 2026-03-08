@@ -83,21 +83,45 @@ Use when building a new feature that requires backend API + frontend UI.
 ```
 Sequence:
   0. [CONTEXT LOADING — orchestrator runs this directly, no agent needed]
-     a. Load velents-architecture skill → understand 5-layer system and feature map
-     b. Load velents-feature-map skill → run the Pre-Code Impact Checklist
-        → identify which existing features are at risk from this change
-        → if any 🔴 CRITICAL shared resources are touched, read their implementations
-     c. Identify all technologies the feature will use (from the request + architecture)
-     d. Fetch llms.txt for each technology via WebFetch (velents-llms-txt skill)
-        → Next.js (if frontend), Laravel (if backend), shadcn (if UI), etc.
-     e. Load velents-ui-inventory (if frontend work involved)
-     f. **Read the prototype** (if provided — Figma URL, screenshots, design files):
-        → Load velents-ui-prototype skill → follow Phase 1 (read all screens) + Phase 2 (identify gaps)
-        → Ask PM the Phase 3 questions BEFORE writing spec
-        → Do NOT proceed to Step 1 until all prototype gaps are answered
-     g. Summarize context: "Feature touches X module, risks Y existing feature,
-        using technologies A/B/C with docs fetched, prototype read with N states confirmed"
-     [GATE: context loaded, prototype understood, all gaps answered before any spec is written]
+
+     ── STEP 0A: CLASSIFY SCOPE (do this first, takes ~5 lines) ──
+     Read the request and classify: backend-only | frontend-only | full-stack | integration | fix
+     This determines EXACTLY what to load — do not load beyond your classified scope.
+
+     ── STEP 0B: ARCHITECTURE (TL;DR only) ──
+     Read velents-architecture skill TL;DR block only (~20 lines).
+     Only read the full skill if you need specific module/service details.
+
+     ── STEP 0C: IMPACT CHECK (TL;DR table only) ──
+     Read velents-feature-map TL;DR shared-resources table.
+     If your task touches a 🔴 CRITICAL resource → read that feature's section in full.
+     If your task does NOT appear in the table → proceed.
+
+     ── STEP 0D: FETCH llms.txt (scope-targeted, NOT all) ──
+     Use velents-llms-txt scope table to decide which docs to fetch.
+     backend-only  → fetch Laravel only
+     frontend-only → fetch Next.js + React + specific UI library used
+     integration   → fetch only the specific external service
+     Never fetch ElevenLabs/Tiptap/LiveKit unless your task explicitly uses them.
+
+     ── STEP 0E: UI INVENTORY (frontend tasks only) ──
+     If frontend work is involved: read velents-ui-inventory TL;DR table only.
+     Only read the full inventory if the component isn't in the TL;DR table.
+
+     ── STEP 0F: PROTOTYPE (only if provided) ──
+     If a prototype URL/screenshot is provided:
+       → Load velents-ui-prototype skill → Phase 1 (read screens) + Phase 2 (identify gaps)
+       → Ask PM all Phase 3 questions BEFORE writing spec
+       → Do NOT proceed until all gaps answered
+     If no prototype → skip this step entirely.
+
+     ── SUMMARIZE (1 sentence per item, total ~5 lines) ──
+     "Scope: [backend-only|frontend-only|full-stack|integration]
+      Touches shared resources: [yes - AgentService | no]
+      Tech docs fetched: [Laravel only | Next.js + React + TanStack Query]
+      Prototype: [read, N gaps answered | none provided]
+      Ready to spec."
+     [GATE: context loaded with minimum necessary scope before spec is written]
 
   1. [speckit-specify]           Write Velents-aware spec (reads codebase first)
   2. [speckit-challenge]         mode: challenge-spec
@@ -285,25 +309,31 @@ COMPLETE: report full summary
 
 ### Context Passing (every agent invocation)
 
-Every Task tool call MUST include this context block:
+Every Task tool call MUST include this context block — keep it slim:
 
 ```
 ## Workflow: {workflow-name} | Step {N} of {total}
+Scope: {backend-only | frontend-only | full-stack | integration}
 
-### Feature Request:
-{original user request verbatim}
+### Feature Request (1-2 sentences max):
+{original user request — summarized, not verbatim if long}
 
-### Previous Steps Completed:
-- Step 1 [{agent}]: {files created, key decisions made}
-- Step 2 [{agent}]: {files created, key decisions made}
-... (all prior steps)
+### Decisions Made (paths/names only — no file contents):
+- Migration: database/migrations/tenant/YYYY_MM_DD_create_{table}_table.php
+- Model: App\Models\{X} — traits: HasUuids, SoftDeletes
+- Service: App\Services\{X}\{X}Service — methods: create(), update(), delete()
+- Routes: GET|POST /api/v1/{resource} — middleware: auth:api, tenant.aware, permission:{x.y}
+- Permissions: {module.view}, {module.create} — added to seeder
+- Frontend page: app/(dashboard)/[tenant]/{resource}/page.tsx
 
 ### Your Task:
-{specific instructions for this step}
+{specific instructions for this agent — 3-5 bullet points, not prose}
 
-### Constraints from prior steps:
-{exact file paths, class names, table names, route paths, permission names decided above}
+### Must Respect:
+{only constraints that affect THIS step — not everything from all prior steps}
 ```
+
+**What NOT to pass between steps**: full file contents, full spec.md text, full plan.md text — every agent can read these from disk using `.specify/specs/[feature]/`. Pass paths, not content.
 
 ### Parallel Execution
 

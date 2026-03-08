@@ -8,7 +8,6 @@ skills:
   - velents-agent-model
   - velents-backend
   - velents-frontend
-  - docs-reference
   - velents-dev-standards
   - velents-llms-txt
   - velents-feature-map

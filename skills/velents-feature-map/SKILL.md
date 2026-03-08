@@ -5,6 +5,25 @@ description: Impact map of all existing Velents features — tables, routes, ser
 
 # Velents Feature Impact Map
 
+## TL;DR — Shared Resources Risk Table
+
+Check your task against this table first. If you're touching any of these, read the full map below.
+
+| Resource | 🔴 Risk Level | Touches These Features |
+|---|---|---|
+| `agents` table | 🔴 CRITICAL | Conversations, Calls, Analytics, Payment — all FK to agent_id |
+| `Payment::Pay()` | 🔴 CRITICAL | Every feature that charges credits (conversation, call, batch) |
+| Spatie permissions | 🔴 CRITICAL | All endpoints — wrong permission breaks entire module access |
+| `conversation_analysis` table | 🔴 CRITICAL | Analytics dashboards + quality scoring |
+| `conversations` table | 🟡 HIGH | Calls (via session_id), Analytics, Agent CRUD (stats) |
+| `calls` table | 🟡 HIGH | Voice pipeline (Normal/Fast/Flash), Analytics |
+| `AgentService` | 🟡 HIGH | Agent Builder UI, Conversation flows, Channel deployment |
+| WebSocket channel names | 🟡 HIGH | All real-time UI components |
+| `knowledge_bases` table | 🟠 MEDIUM | Agent Builder (knowledge tab), RAG search |
+| `schemas` table | 🟠 MEDIUM | Agent Builder (schema tab), data extraction |
+
+**If your task does NOT appear in this table → proceed. If it does → read full map below before writing.**
+
 ## THE RULE: Read Before You Touch
 
 Before writing any code, scan this map for:
