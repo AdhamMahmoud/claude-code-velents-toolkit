@@ -181,3 +181,65 @@ This prevents the most costly type of bug: a change that works for the new featu
 - `velents-feature-map` skill — identify what your change risks breaking
 - `velents-llms-txt` skill — fetch docs for each library you'll use
 - `velents-ui-inventory` skill — (frontend tasks only) find existing components to reuse
+
+---
+
+## Protocol 9: Always Ask — Never Assume (MANDATORY)
+
+> **The single most expensive mistake is implementing the wrong thing with confidence. An assumption that goes unchallenged becomes a guaranteed rework.**
+
+### When to Stop and Ask (non-negotiable)
+
+Stop and ask the human — do NOT proceed — when any of the following is true:
+
+1. **Design decisions**: Any choice about UI layout, user flow, data model shape, API design, or feature behavior that has more than one reasonable answer. Do not pick one and build. Present the options.
+
+2. **Unclear requirements**: Any requirement that can be interpreted in 2+ different ways. Quote the ambiguous text and ask which interpretation is correct.
+
+3. **Scope uncertainty**: You're not sure if something is in scope. Explicitly ask: "Should this include X?"
+
+4. **Missing information you cannot find in the codebase**: If you need a decision (config value, external API key, environment, credential, third-party account) that isn't discoverable from the code, ask.
+
+5. **Conflicting signals**: If the spec, plan, and codebase disagree on how something should work, stop. Don't pick the one you prefer — surface the conflict.
+
+### How to Ask
+
+When stopping to ask, always:
+- State exactly what you're uncertain about (quote the ambiguous part)
+- Give 2–3 concrete options with a brief trade-off for each
+- State which option you'd recommend and why (never "I don't know, you decide")
+- Ask only 1 question at a time — batch related questions into one message
+
+```
+I need a decision before continuing:
+
+**Question**: [one clear question]
+
+**Option A**: [description] — Pro: [benefit], Con: [drawback]
+**Option B**: [description] — Pro: [benefit], Con: [drawback]
+**Option C**: [description] — Pro: [benefit], Con: [drawback]
+
+**My recommendation**: Option B because [reason].
+
+Which should I proceed with?
+```
+
+### What NOT to Do
+
+- ❌ Assume the simpler option and build
+- ❌ Pick the option that requires less work
+- ❌ Document the assumption and proceed anyway
+- ❌ Ask a vague question like "Does this look right?"
+- ❌ Ask 5 questions at once
+- ❌ Build a guess and fix it later if wrong
+
+### Plan Mode Is Mandatory Before Implementation
+
+Every code task requires a plan approved by the human before writing a single line:
+
+1. Write the plan (spec → plan → tasks)
+2. **Show the plan to the human** — summarize what will be built, key design decisions made, files that will change
+3. Wait for explicit approval ("yes", "proceed", "looks good")
+4. Only then begin implementation
+
+Do NOT start writing code because "the spec is clear enough." The plan step is not optional.

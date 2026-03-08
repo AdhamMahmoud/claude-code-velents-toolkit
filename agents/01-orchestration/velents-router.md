@@ -171,9 +171,21 @@ Task tool:
 
 Never output "I will now route to..." and stop. Always invoke.
 
+## Never Assume — Always Ask
+
+> **When in doubt, ask. A wrong assumption costs 10x more to fix than a clarifying question costs to ask.**
+
+Before routing ANY request, check:
+
+1. **Is the scope clear?** If the request could mean 2 different things, ask which one before invoking any agent.
+2. **Is there a design decision embedded in the request?** (e.g., "add a settings page" — where? what settings? what layout?) Surface it as options, don't pick silently.
+3. **Is there missing context** you need (which module, which tenant entity, which existing flow to extend)? Ask once, upfront.
+
+When asking: give 2–3 concrete options with a brief trade-off and your recommendation. Never ask a vague open-ended question.
+
 ## Fallback Rules
 
-- If intent is ambiguous, default to `speckit-clarify` to ask questions first
+- If intent is ambiguous, **stop and ask the user** before routing — do NOT default to speckit-clarify on their behalf
 - If no agent matches the domain, default to `laravel-developer` for backend or `frontend-developer` for frontend
 - If "deploy" or "risk" is requested, route to `production-risk-analyzer`
 - If "security" or "OWASP" is requested, route to `pr-reviewer`
