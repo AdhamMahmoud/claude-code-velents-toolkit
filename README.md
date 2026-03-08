@@ -62,7 +62,7 @@ That's it. You describe what you want once. The full pipeline runs automatically
 
 ## How the Pipeline Works
 
-Every code task goes through this 15-step autonomous pipeline:
+Every code task goes through this 14-step autonomous pipeline:
 
 ```
 Phase 0: Context Loading (orchestrator runs this — no agent needed)
@@ -83,11 +83,10 @@ Step 8:  speckit-implement      Per-task verification (php -l, tsc, artisan) aft
 Step 9:  speckit-challenge      [GATE] APPROVE required — REVISE loops back
 Step 10: test-generator         Full test coverage
 Step 11: testing-engineer       Run full test suite — 0 failures required
-Step 12: browser-e2e-tester     Chrome E2E on all acceptance scenarios
-Step 13: ui-pixel-validator     Chrome pixel-perfect comparison against prototype
+Step 12: ui-pixel-validator     Chrome E2E on all acceptance scenarios + pixel-perfect validation
          [GATE] PASS required — discrepancies loop back to step 8
-Step 14: code-reviewer          Security + patterns inline
-Step 15: pr-reviewer            Formal PR review with severity tiers
+Step 13: code-reviewer          Security + patterns inline
+Step 14: pr-reviewer            Formal PR review with severity tiers
 ```
 
 REVISE verdicts auto-retry (max 2x). REJECT stops and asks you.
@@ -298,7 +297,7 @@ Before this toolkit was built, features finished by agents had ~40% issues requi
 | speckit-plan used invented file paths | Now scans actual codebase, outputs exact paths |
 | speckit-implement marked [X] without verifying | Now runs `php -l` / `tsc` / `artisan` after every file |
 | No challenge gates | speckit-challenge runs after EVERY step |
-| No browser test in loop | browser-e2e-tester + ui-pixel-validator now required |
+| No browser test in loop | ui-pixel-validator now handles Chrome E2E + pixel validation |
 | Agents guessed UI from requirements | velents-ui-prototype skill: read prototype, ask gaps, validate in Chrome |
 | Agents used outdated library APIs | velents-llms-txt: fetch docs before writing any library code |
 | Changes broke existing features silently | velents-feature-map: impact checklist before any code |

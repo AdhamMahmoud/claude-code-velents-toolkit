@@ -138,12 +138,10 @@ Sequence:
      [GATE: APPROVE required — REVISE loops back to step 8 with specific fixes]
   10. [test-generator]           Generate/complete full test coverage
   11. [testing-engineer]         Run full test suite — must be 0 failures
-  12. [browser-e2e-tester]       Chrome E2E on all acceptance scenarios from spec.md
-      [GATE: all flows PASS — FAIL loops back to step 8]
-  13. [ui-pixel-validator]       Chrome pixel-perfect validation against prototype (if prototype provided)
+  12. [ui-pixel-validator]       Chrome E2E on all acceptance scenarios + pixel-perfect validation
       [GATE: PASS required — FAIL loops back to step 8 with exact discrepancy list]
-  14. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
-  15. [pr-reviewer]              Formal PR review with severity tiers
+  13. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
+  14. [pr-reviewer]              Formal PR review with severity tiers
 ```
 
 **Context flow:**
@@ -156,7 +154,7 @@ Sequence:
 - Step 8 receives tasks.md, outputs: all created/modified files
 - Step 9 outputs: challenge verdict — APPROVE unblocks step 10
 - Steps 10-11 receive all file paths, outputs: passing test suite
-- Step 12 receives spec.md acceptance scenarios, outputs: E2E pass/fail per scenario
+- Step 12 receives spec.md acceptance scenarios + prototype, outputs: Chrome E2E pass/fail + pixel validation
 - Steps 13-14 receive all outputs for final review
 
 ### 2. Integration Feature Workflow
@@ -190,7 +188,7 @@ Sequence:
   1. [voice-pipeline-developer]  Design pipeline stages + data flow
   2. [database-developer]        Create storage schema for audio/transcripts/scores
   3. [laravel-developer]         Create service classes for each pipeline stage
-  4. [ai-scoring-developer]      Implement scoring/analysis logic
+  4. [laravel-developer]         Implement scoring/analysis logic
   5. [api-developer]             Create API endpoints + WebSocket events
   6. [frontend-developer]        Build real-time UI with audio player
   7. [testing-engineer]          Write pipeline integration tests

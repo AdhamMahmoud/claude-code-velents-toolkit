@@ -61,7 +61,7 @@ speckit-specify
   → speckit-challenge (mode: challenge-tasks) [GATE]
   → speckit-implement (with per-task verification)
   → speckit-challenge (mode: challenge-implementation) [GATE]
-  → test-generator → testing-engineer → browser-e2e-tester [GATE]
+  → test-generator → testing-engineer → ui-pixel-validator [GATE]
   → code-reviewer → pr-reviewer
 ```
 
@@ -95,29 +95,25 @@ Route directly only when NO new code is written:
 #### 03-Next.js Frontend Layer
 | Agent | Use When |
 |---|---|
-| `frontend-developer` | React components, pages, layouts, client-side logic |
-| `dashboard-developer` | Admin dashboard UI, data tables, charts, analytics views |
-| `form-builder` | Complex forms, multi-step wizards, validation UI |
-| `component-library` | Reusable UI components, design system elements |
+| `frontend-developer` | Pages, layouts, data fetching, client-side logic, API integration |
+| `ui-developer` | Components, shadcn/ui, Tailwind CSS, prototype-first UI, RTL |
+| `state-developer` | Zustand stores, TanStack Query hooks, React Hook Form + Zod |
 
 #### 04-Integrations Layer
 | Agent | Use When |
 |---|---|
-| `whatsapp-developer` | WhatsApp Business API, message templates, webhook handlers |
-| `zoom-developer` | Zoom SDK, meeting management, recording handling |
-| `calendar-developer` | Google/Outlook calendar sync, scheduling logic |
-| `email-developer` | Email templates, SMTP, notification channels |
-| `payment-developer` | Stripe/payment gateway integration, subscription billing |
-| `storage-developer` | S3/file storage, media processing, upload handling |
+| `integration-developer` | ElevenLabs, LiveKit, Gemini, CallGateway HTTP clients |
+| `webhook-developer` | Inbound webhooks from CallGateway, ElevenLabs, GenesysCloud |
+| `voice-pipeline-developer` | Normal/Fast/Flash pipelines, S2S post-processing |
+| `channel-developer` | WhatsApp (Meta API), Genesys Cloud (9 regions), WebChat |
 
 #### 05-Domain Features Layer
 | Agent | Use When |
 |---|---|
-| `recruitment-developer` | ATS features, job pipelines, candidate management |
-| `assessment-developer` | Assessment engine, question banks, scoring algorithms |
-| `voice-pipeline-developer` | Voice AI, Deepgram STT, GPT analysis, ElevenLabs TTS |
-| `ai-scoring-developer` | ML scoring models, AI evaluation, bias detection |
-| `interview-developer` | Video interview flow, scheduling, feedback collection |
+| `agent-builder-developer` | 7-tab AI agent builder, tools, schemas, channels, deployment |
+| `conversation-developer` | Text + voice conversation lifecycle, real-time messaging, escalation |
+| `analytics-developer` | GeminiJudge quality scoring, dashboards, 6-metric analysis |
+| `payment-developer` | Credit billing, payment plans, per-message/call deduction |
 
 #### 06-Quality and Testing Layer
 | Agent | Use When |

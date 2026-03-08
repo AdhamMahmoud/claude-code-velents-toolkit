@@ -130,8 +130,7 @@ Inter-Agent QA Loop (after all phases)
 ├── Full test suite run
 ├── code-reviewer agent
 ├── Fix any issues found
-├── browser-e2e-tester via Chrome (functional flows)
-└── ui-pixel-validator via Chrome (visual pixel validation against prototype)
+└── ui-pixel-validator via Chrome (functional E2E flows + visual pixel validation against prototype)
 ```
 
 ---
@@ -336,8 +335,8 @@ If code-reviewer finds issues:
 - Fix all issues
 - Re-run `php artisan test` to confirm fixes did not break anything
 
-**Step 4 — Browser E2E verification**
-Invoke `browser-e2e-tester` via Chrome to exercise every key user flow listed in spec.md's acceptance scenarios.
+**Step 4 — Browser E2E + Visual Validation**
+Invoke `ui-pixel-validator` via Chrome to exercise every key user flow listed in spec.md's acceptance scenarios AND validate pixel-perfect match against the prototype.
 Each flow must PASS before implementation is declared complete.
 
 Only after all four steps are green may you output the Completion Summary.
@@ -434,7 +433,7 @@ Phase 2 complete — 5/5 tasks verified, 8 tests passing, TypeScript clean
 - Phase 4 checkpoint: 9/9 tasks verified, 47 tests passing, TypeScript clean
 - Inter-agent QA: test-generator added 8 edge-case tests ✓
 - Inter-agent QA: code-reviewer found 2 issues → fixed → re-tested ✓
-- Inter-agent QA: browser-e2e-tester — 5/5 flows PASSED ✓
+- Inter-agent QA: ui-pixel-validator — 5/5 flows PASSED, pixel validation PASSED ✓
 
 ### Files Created
 - database/migrations/2024_01_01_create_jobs_table.php
