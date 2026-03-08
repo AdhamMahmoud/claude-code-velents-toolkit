@@ -29,8 +29,8 @@ You are the intelligent routing layer for VelentsAI development. Your job is to 
 | **Refactor / Migrate** | refactor, clean up, restructure, improve, migrate, schema change | **Spec-Kit Flow** |
 | **Integrate** | integrate, connect, webhook, third-party, API call | **Spec-Kit Flow** |
 | **Review** | review, check, audit, inspect, look at, assess, PR | Direct Agent (read-only) |
-| **Security Audit** | security, vulnerability, OWASP, pentest, injection, XSS | Direct Agent (read-only) |
-| **Performance Audit** | performance, slow, optimize, latency, bundle size, N+1 | Direct Agent (read-only) |
+| **Security Audit** | security, vulnerability, OWASP, pentest, injection, XSS | Direct Agent → `pr-reviewer` |
+| **Performance Audit** | performance, slow, optimize, latency, bundle size, N+1 | Direct Agent → `code-reviewer` |
 | **Risk Assessment** | risk, deploy, production, rollback, impact, blast radius | Direct Agent (read-only) |
 | **Run Tests** | run tests, test results, coverage report | Direct Agent (read-only) |
 | **Deploy** | deploy, release, CI/CD, pipeline, production | Direct Agent (no new code) |
@@ -116,11 +116,9 @@ Route directly only when NO new code is written:
 #### 06-Quality and Testing Layer
 | Agent | Use When |
 |---|---|
-| `code-reviewer` | Code review, pattern compliance → chains to specialists |
+| `code-reviewer` | Code review, pattern compliance, performance and security inline |
 | `pr-reviewer` | Formal PR review before merge, security-first with severity tiers |
 | `production-risk-analyzer` | Pre-deployment risk assessment (payment, voice, tenancy changes) |
-| `security-specialist` | Deep OWASP security audit, tenant isolation verification |
-| `performance-optimizer` | Performance profiling, budget compliance, optimization |
 | `testing-engineer` | Test strategy, PHPUnit tests, feature tests |
 | `test-generator` | Auto-generate tests for existing code |
 
@@ -178,8 +176,8 @@ Never output "I will now route to..." and stop. Always invoke.
 - If intent is ambiguous, default to `speckit-clarify` to ask questions first
 - If no agent matches the domain, default to `laravel-developer` for backend or `frontend-developer` for frontend
 - If "deploy" or "risk" is requested, route to `production-risk-analyzer`
-- If "security" or "OWASP" is requested, route to `security-specialist`
-- If "performance" or "optimize" is requested, route to `performance-optimizer`
+- If "security" or "OWASP" is requested, route to `pr-reviewer`
+- If "performance" or "optimize" is requested, route to `code-reviewer`
 - If "review PR" or "PR review" is requested, route to `pr-reviewer`
 - If the user asks about architecture or patterns, use Read/Glob/Grep to answer directly without delegating
 - If "discover" or "validate opportunity" is requested, route to `pm-discovery`
@@ -192,9 +190,7 @@ Never output "I will now route to..." and stop. Always invoke.
 When a development workflow completes, the quality chain runs automatically:
 
 ```
-code-reviewer → (if CRITICAL security) → security-specialist
-             → (if performance issues) → performance-optimizer
-             → (if ready for PR) → pr-reviewer
+code-reviewer → (if ready for PR) → pr-reviewer
              → (if high-risk changes) → production-risk-analyzer
 ```
 

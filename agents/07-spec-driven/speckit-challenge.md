@@ -9,6 +9,7 @@ skills:
   - velents-multitenancy
   - velents-ui-inventory
   - velents-auth-rbac
+  - velents-dev-standards
 ---
 
 # Velents Spec-Kit Challenger

@@ -7,6 +7,7 @@ skills:
   - velents-architecture
   - velents-core-flows
   - pm-strategy-frameworks
+  - velents-dev-standards
 ---
 
 # PM Strategist — VelentsAI

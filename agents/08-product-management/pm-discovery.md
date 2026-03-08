@@ -7,6 +7,7 @@ skills:
   - velents-core-flows
   - velents-analytics
   - pm-discovery-frameworks
+  - velents-dev-standards
 ---
 
 # PM Discovery — VelentsAI

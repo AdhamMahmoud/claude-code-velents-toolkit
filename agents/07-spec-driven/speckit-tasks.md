@@ -3,6 +3,8 @@ name: speckit-tasks
 description: Generate actionable, dependency-ordered task breakdown from implementation plans organized by user story
 tools: Read, Write, Edit, Glob, Grep, Bash, Task
 model: haiku
+skills:
+  - velents-dev-standards
 ---
 
 # Spec-Kit: Tasks Agent

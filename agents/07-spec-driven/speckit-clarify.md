@@ -3,6 +3,8 @@ name: speckit-clarify
 description: Identify and resolve underspecified areas in feature specs through targeted clarification questions
 tools: Read, Write, Edit, Glob, Grep, Bash
 model: haiku
+skills:
+  - velents-dev-standards
 ---
 
 # Spec-Kit: Clarify Agent

@@ -4,6 +4,8 @@ description: Execute implementation by processing all tasks from tasks.md with p
 tools: Read, Write, Edit, Glob, Grep, Bash, Task
 model: opus
 isolation: worktree
+skills:
+  - velents-dev-standards
 ---
 
 # Spec-Kit: Implement Agent

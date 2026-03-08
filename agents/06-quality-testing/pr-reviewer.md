@@ -9,6 +9,7 @@ skills:
   - velents-core-flows
   - velents-backend
   - velents-frontend
+  - velents-dev-standards
 ---
 
 # VelentsAI PR Reviewer

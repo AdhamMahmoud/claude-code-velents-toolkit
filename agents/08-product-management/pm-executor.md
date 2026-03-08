@@ -7,6 +7,7 @@ skills:
   - velents-core-flows
   - velents-architecture
   - pm-execution-frameworks
+  - velents-dev-standards
 ---
 
 # PM Executor — VelentsAI

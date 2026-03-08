@@ -3,6 +3,8 @@ name: speckit-specify
 description: Create feature specifications for the Velents codebase from natural language descriptions using spec-driven development
 tools: Read, Write, Edit, Glob, Grep, Bash, Task, Skill
 model: opus
+skills:
+  - velents-dev-standards
 ---
 
 # Spec-Kit: Specify Agent (Velents)

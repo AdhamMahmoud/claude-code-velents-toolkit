@@ -82,7 +82,7 @@ Sequence:
   11. [testing-engineer]         Run full test suite — must be 0 failures
   12. [browser-e2e-tester]       Chrome E2E on all acceptance scenarios from spec.md
       [GATE: all flows PASS — FAIL loops back to step 8]
-  13. [code-reviewer]            Final review — chains to security/performance if needed
+  13. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
   14. [pr-reviewer]              Formal PR review with severity tiers
 ```
 
@@ -163,7 +163,7 @@ Parallel Group B (can run simultaneously):
   - [testing-engineer]       Backend tests
 
 Sequential after Group B:
-  3. [code-reviewer]         Full stack review → chains to specialists
+  3. [code-reviewer]         Full stack review — handles security and performance inline; escalates to pr-reviewer if critical
   4. [pr-reviewer]           Formal PR review
   5. [production-risk-analyzer]  Risk assessment (payment/voice/tenancy changes)
 ```

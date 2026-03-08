@@ -10,6 +10,7 @@ skills:
   - velents-integrations
   - velents-voice
   - velents-payment
+  - velents-dev-standards
 ---
 
 # VelentsAI Production Risk Analyzer

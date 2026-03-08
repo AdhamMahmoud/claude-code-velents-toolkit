@@ -9,6 +9,7 @@ skills:
   - velents-backend
   - velents-frontend
   - docs-reference
+  - velents-dev-standards
 ---
 
 # VelentsAI Testing Engineer

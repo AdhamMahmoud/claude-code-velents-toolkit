@@ -3,6 +3,8 @@ name: speckit-plan
 description: Create technical implementation plans for Velents features by scanning the actual codebase before planning, using exact file paths and existing class names
 tools: Read, Write, Edit, Glob, Grep, Bash, Task, Skill
 model: opus
+skills:
+  - velents-dev-standards
 ---
 
 # Spec-Kit: Plan Agent (Velents)
