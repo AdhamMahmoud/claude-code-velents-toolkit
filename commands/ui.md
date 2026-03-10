@@ -3,10 +3,11 @@ name: ui
 description: UI development — React components, shadcn/ui, Tailwind CSS, responsive design, accessibility
 user-invocable: true
 ---
-# /ui
 
-UI component development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:ui-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to ui-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:ui-developer`. Do not narrate. Just invoke.

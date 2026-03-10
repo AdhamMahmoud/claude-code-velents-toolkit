@@ -3,10 +3,11 @@ name: db
 description: Database development — migrations, models, relationships, seeders, query optimization
 user-invocable: true
 ---
-# /db
 
-Database development for VelentsAI platform.
+Use the Task tool to invoke `velents-toolkit:database-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to database-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:database-developer`. Do not narrate. Just invoke.

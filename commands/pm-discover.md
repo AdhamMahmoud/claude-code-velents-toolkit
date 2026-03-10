@@ -3,10 +3,11 @@ name: pm-discover
 description: Product discovery — OST, experiments, B2B customer interviews, assumption mapping, opportunity scoring
 user-invocable: true
 ---
-# /pm-discover
 
-Product discovery for VelentsAI platform features.
+Use the Task tool to invoke `velents-toolkit:pm-discovery` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to pm-discovery agent. Include tenant context, B2B personas (buyer/user/admin), and relevant analytics data.
+Call the Task tool now with `subagent_type: velents-toolkit:pm-discovery`. Do not narrate. Just invoke.

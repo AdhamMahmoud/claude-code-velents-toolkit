@@ -3,10 +3,11 @@ name: agent-build
 description: AI agent builder — agent configuration, prompt templates, tool definitions, knowledge bases
 user-invocable: true
 ---
-# /agent-build
 
-AI agent builder development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:agent-builder-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to agent-builder-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:agent-builder-developer`. Do not narrate. Just invoke.

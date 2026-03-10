@@ -3,10 +3,11 @@ name: backend
 description: Laravel backend development — controllers, repositories, services, jobs, migrations
 user-invocable: true
 ---
-# /backend
 
-Laravel 12 backend development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:laravel-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to laravel-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:laravel-developer`. Do not narrate. Just invoke.

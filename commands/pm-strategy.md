@@ -3,10 +3,11 @@ name: pm-strategy
 description: Product strategy — Lean Canvas, SWOT, Porter's, B2B metrics, platform expansion, competitive positioning
 user-invocable: true
 ---
-# /pm-strategy
 
-Product strategy analysis for VelentsAI platform.
+Use the Task tool to invoke `velents-toolkit:pm-strategist` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to pm-strategist agent. Include platform architecture context and B2B SaaS metrics.
+Call the Task tool now with `subagent_type: velents-toolkit:pm-strategist`. Do not narrate. Just invoke.

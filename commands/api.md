@@ -3,10 +3,11 @@ name: api
 description: API development — RESTful endpoints, API resources, request validation, versioning
 user-invocable: true
 ---
-# /api
 
-API development for VelentsAI platform.
+Use the Task tool to invoke `velents-toolkit:api-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to api-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:api-developer`. Do not narrate. Just invoke.

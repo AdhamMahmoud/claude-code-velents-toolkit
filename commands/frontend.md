@@ -3,10 +3,11 @@ name: frontend
 description: Next.js frontend development — pages, layouts, server components, client components, data fetching
 user-invocable: true
 ---
-# /frontend
 
-Next.js 16 frontend development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:frontend-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to frontend-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:frontend-developer`. Do not narrate. Just invoke.

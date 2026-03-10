@@ -3,10 +3,11 @@ name: channel
 description: Channel development — WhatsApp, SMS, email, webchat, omnichannel routing
 user-invocable: true
 ---
-# /channel
 
-Communication channel development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:channel-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to channel-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:channel-developer`. Do not narrate. Just invoke.

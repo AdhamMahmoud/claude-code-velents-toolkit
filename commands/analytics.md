@@ -3,10 +3,11 @@ name: analytics
 description: Analytics development — dashboards, reports, metrics, conversation analytics, agent performance
 user-invocable: true
 ---
-# /analytics
 
-Analytics and reporting development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:analytics-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to analytics-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:analytics-developer`. Do not narrate. Just invoke.

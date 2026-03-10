@@ -3,10 +3,11 @@ name: payment
 description: Payment development — billing, subscriptions, usage metering, Stripe integration, invoicing
 user-invocable: true
 ---
-# /payment
 
-Payment and billing development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:payment-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to payment-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:payment-developer`. Do not narrate. Just invoke.

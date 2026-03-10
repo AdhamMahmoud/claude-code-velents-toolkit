@@ -3,10 +3,11 @@ name: convo
 description: Conversation development — chat flows, message handling, conversation state, handoff logic
 user-invocable: true
 ---
-# /convo
 
-Conversation system development for VelentsAI.
+Use the Task tool to invoke `velents-toolkit:conversation-developer` with:
 
-Input: $ARGUMENTS
+```
+$ARGUMENTS
+```
 
-Route to conversation-developer agent.
+Call the Task tool now with `subagent_type: velents-toolkit:conversation-developer`. Do not narrate. Just invoke.
