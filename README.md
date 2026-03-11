@@ -24,9 +24,23 @@ Every agent already knows:
 
 ---
 
-## Prerequisites — Connect Jira Before You Start
+## Getting Started (First-Time Setup)
 
-VelentsAI uses Jira for all task tracking. Connect the Atlassian MCP once so Claude can read and update your Jira tickets directly:
+### Step 1 — Install the Plugin
+
+```bash
+# Register the marketplace (one time)
+claude plugins add git https://github.com/AdhamMahmoud/claude-code-velents-toolkit.git
+
+# Install the plugin
+claude plugin install velents-toolkit
+```
+
+Restart Claude Code after installing.
+
+### Step 2 — Connect Jira (Atlassian MCP)
+
+VelentsAI uses Jira for all task tracking. Connect once so Claude can read and update tickets directly:
 
 ```bash
 claude mcp add --transport http atlassian https://mcp.atlassian.com/v1/mcp
@@ -37,6 +51,36 @@ After connecting, you can reference tickets directly:
 /velents implement VEL-123
 /velents fix the bug in VEL-456
 ```
+
+### Step 3 — Open the VelentsAI Repo
+
+The toolkit reads the actual codebase. Always run Claude Code from inside the VelentsAI repo:
+
+```bash
+cd /path/to/velentsAgents   # Laravel backend
+# or
+cd /path/to/agent-hub       # Next.js frontend
+```
+
+### Step 4 — Try It
+
+```bash
+/velents what is this codebase?     # orient yourself
+/velents VEL-123                    # implement a Jira ticket
+/review                             # review code you just wrote
+```
+
+---
+
+## Who Uses What
+
+| Role | Primary Commands | When |
+|------|-----------------|------|
+| **Backend Dev** | `/velents`, `/backend`, `/api`, `/db` | Building features, fixing bugs |
+| **Frontend Dev** | `/velents`, `/frontend`, `/ui` | Building UI, integrating APIs |
+| **Full-Stack Dev** | `/velents` | Full features end-to-end |
+| **QA / Lead** | `/review`, `/review-pr`, `/risk`, `/test` | Before merging PRs |
+| **PM** | `/pm-discover`, `/pm-strategy`, `/pm-execute` | Discovery, PRDs, OKRs |
 
 ---
 
