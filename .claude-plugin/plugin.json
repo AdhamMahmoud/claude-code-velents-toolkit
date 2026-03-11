@@ -21,6 +21,7 @@
   "agents": [
     "./agents/01-orchestration/velents-router.md",
     "./agents/01-orchestration/workflow-orchestrator.md",
+    "./agents/01-orchestration/fullstack-developer.md",
     "./agents/02-laravel-backend/laravel-developer.md",
     "./agents/02-laravel-backend/api-developer.md",
     "./agents/02-laravel-backend/database-developer.md",

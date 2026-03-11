@@ -7,7 +7,7 @@
 
 ## What is this?
 
-The VelentsAI Claude Agent Toolkit is a **Claude Code plugin** — 32 specialized AI agents, 22 domain knowledge skills, and 21 slash commands built specifically for the VelentsAI platform.
+The VelentsAI Claude Agent Toolkit is a **Claude Code plugin** — 33 specialized AI agents, 22 domain knowledge skills, and 21 slash commands built specifically for the VelentsAI platform.
 
 **Architecture**: Agents are short, direct, specialized instructions (~50 lines). All code patterns live in 3 rich skills loaded automatically — `velents-backend`, `velents-frontend`, `velents-testing` — extracted from the real VelentsAI codebase. Agents tell agents *what to do*; skills show them *how the code looks*.
 
@@ -76,9 +76,10 @@ cd /path/to/agent-hub       # Next.js frontend
 
 | Role | Primary Commands | When |
 |------|-----------------|------|
-| **Backend Dev** | `/velents`, `/backend`, `/api`, `/db` | Building features, fixing bugs |
-| **Frontend Dev** | `/velents`, `/frontend`, `/ui` | Building UI, integrating APIs |
-| **Full-Stack Dev** | `/velents` | Full features end-to-end |
+| **Any Dev (quick)** | `/velents fix ...` · `/velents add ...` · `/velents why ...` | Bug fixes, small changes, questions → auto-routes to fast agent |
+| **Any Dev (feature)** | `/velents build ...` · `/velents implement VEL-123` | New features → full spec-kit pipeline |
+| **Backend Dev** | `/backend`, `/api`, `/db` | Direct to specific layer |
+| **Frontend Dev** | `/frontend`, `/ui` | Direct to specific layer |
 | **QA / Lead** | `/review`, `/review-pr`, `/risk`, `/test` | Before merging PRs |
 | **PM** | `/pm-discover`, `/pm-strategy`, `/pm-execute` | Discovery, PRDs, OKRs |
 
@@ -158,13 +159,14 @@ Runs after browser E2E. Opens prototype and implementation side-by-side in Chrom
 
 ---
 
-## Agents (32 total)
+## Agents (33 total)
 
 ### Orchestration
 | Agent | Model | Purpose |
 |-------|-------|---------|
 | `velents-router` | haiku | Intent classification → invokes workflow-orchestrator immediately |
-| `workflow-orchestrator` | **opus** | Autonomous 15-step pipeline — runs without asking between steps |
+| `workflow-orchestrator` | **opus** | Classifies FAST vs FULL, then runs the appropriate path |
+| `fullstack-developer` | sonnet | **Fast path** — bug fixes, small changes, questions, ≤3 files. No spec, no pipeline |
 
 ### Laravel Backend
 | Agent | Model | Purpose |
