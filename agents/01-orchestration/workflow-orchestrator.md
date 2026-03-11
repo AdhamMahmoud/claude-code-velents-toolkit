@@ -65,6 +65,17 @@ Do NOT start implementation until you receive explicit user approval.
 - "Should I run the tests?" — always run them
 - Routine REVISE verdicts — fix and retry automatically
 
+### Resume Protocol (if pipeline was interrupted)
+
+If the user says "resume" or "continue" or if you detect a progress.md file:
+
+1. Read `.specify/specs/[feature]/progress.md` — find last completed phase
+2. Read `.specify/specs/[feature]/tasks.md` — find next incomplete phase
+3. Skip all completed steps — jump directly to the next phase
+4. Report: "Resuming from Phase N — [N] tasks already complete"
+
+Do NOT re-do completed work. Do NOT re-run speckit-specify or speckit-plan if spec.md and plan.md already exist.
+
 > **Phase 0 is always run by the orchestrator itself — no Task tool needed. Read the skills directly using Read tool on the skill files.**
 
 ## GOLDEN RULE: No Code Without Spec, No Step Without Challenge
@@ -133,15 +144,45 @@ Sequence:
   6. [speckit-tasks]             Generate tasks with verification steps included
   7. [speckit-challenge]         mode: challenge-tasks
      [GATE: APPROVE required — REVISE loops back to step 6]
-  8. [speckit-implement]         Per-task verification loop (runs tests after each task)
-  9. [speckit-challenge]         mode: challenge-implementation
-     [GATE: APPROVE required — REVISE loops back to step 8 with specific fixes]
-  10. [test-generator]           Generate/complete full test coverage
-  11. [testing-engineer]         Run full test suite — must be 0 failures
-  12. [ui-pixel-validator]       Chrome E2E on all acceptance scenarios + pixel-perfect validation
+  8. [speckit-implement]         ONE PHASE AT A TIME — see phase loop below
+     [GATE per phase: speckit-challenge mode: challenge-implementation after each phase]
+  9. [test-generator]            Generate/complete full test coverage
+  10. [testing-engineer]         Run full test suite — must be 0 failures
+  11. [ui-pixel-validator]       Chrome E2E on all acceptance scenarios + pixel-perfect validation
       [GATE: PASS required — FAIL loops back to step 8 with exact discrepancy list]
-  13. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
-  14. [pr-reviewer]              Formal PR review with severity tiers
+  12. [code-reviewer]            Final review — handles security and performance inline; escalates to pr-reviewer if critical
+  13. [pr-reviewer]              Formal PR review with severity tiers
+
+### Step 8 — Phase Loop (run this for EVERY phase in tasks.md)
+
+> Context window is finite. Never invoke speckit-implement for all phases at once — invoke it once per phase. Each invocation gets a clean context with just that phase's tasks.
+
+```
+BEFORE starting step 8:
+  → Check if .specify/specs/[feature]/progress.md exists
+  → If yes: read it, find last completed phase, RESUME from next phase
+  → If no: start from Phase 1
+
+FOR EACH PHASE in tasks.md:
+  a. Invoke speckit-implement with:
+     - Phase name and task list (ONLY this phase — not all tasks)
+     - progress.md path (for crash recovery)
+     - Files created so far (from progress.md)
+     - plan.md and spec.md paths (agent reads from disk)
+
+  b. Wait for phase completion report
+
+  c. Invoke speckit-challenge (mode: challenge-implementation):
+     - Pass: list of files created in this phase
+     - Challenge reads the actual files, runs php -l / tsc
+     - APPROVE → proceed to next phase
+     - REVISE → re-invoke speckit-implement for same phase with fixes (max 2 retries)
+     - REJECT → stop, report to user
+
+  d. Report: "✓ Phase N complete and challenged — N tasks, tests passing"
+
+END LOOP when all phases done
+```
 ```
 
 **Context flow:**

@@ -140,10 +140,29 @@ Components:
 - ❌ `- [ ] Create User model` (missing ID)
 - ❌ `T001 Create model` (missing checkbox)
 
+## CRITICAL: Phase Size Limit (Context Window Protection)
+
+> **MAXIMUM 15 tasks per phase. No exceptions.**
+>
+> An agent implementing a phase loses context and hallucinates completions when a phase exceeds ~15 tasks. If a user story requires 20 tasks, split it into two phases (US1a, US1b). This is the single most important rule for implementation quality.
+
+### Phase size rules:
+- Count tasks in the phase before finalizing
+- If count > 15 → split the phase at a natural boundary (e.g., backend vs frontend)
+- Prefer 8-12 tasks per phase — this is the sweet spot
+- Each phase must be independently verifiable (tests pass, tsc clean) before the next starts
+- Mark the split clearly: `Phase 3a: US1 — Backend`, `Phase 3b: US1 — Frontend`
+
+### If the feature has > 60 tasks total:
+STOP — do not generate one giant tasks.md. Instead:
+1. Output Phase 1 + Phase 2 only (setup + foundational)
+2. Add a note: "Large feature — story phases will be generated on-demand as each phase completes"
+3. The orchestrator will invoke speckit-tasks again for each story phase when ready
+
 ## Task Organization
 
 ### From User Stories (spec.md)
-- Each story (P1, P2, P3) gets its own phase
+- Each story (P1, P2, P3) gets its own phase (max 15 tasks; split if needed)
 - Map related components to story:
   - Models needed
   - Services needed
@@ -151,9 +170,9 @@ Components:
   - Tests (if requested)
 
 ### From Plan
-- Setup → Phase 1
-- Foundational → Phase 2
-- Story-specific → Story phases
+- Setup → Phase 1 (max 5 tasks)
+- Foundational → Phase 2 (max 10 tasks)
+- Story-specific → Story phases (max 15 tasks each, split backend/frontend if needed)
 
 ### Within Each Story
 - Tests FIRST (if included) - must FAIL before implementation

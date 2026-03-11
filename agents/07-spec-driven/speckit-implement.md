@@ -88,7 +88,43 @@ dist/
 .idea/
 ```
 
-### 4. Parse Tasks
+### 4. Check or Create Progress File
+
+**Before doing anything else**, check for an existing progress file:
+
+```
+.specify/specs/[feature]/progress.md
+```
+
+If it exists → read it to find the last completed phase and task. Resume from there. Do NOT re-do completed tasks.
+
+If it does NOT exist → create it now:
+
+```markdown
+# Implementation Progress: [Feature Name]
+
+## Status: IN PROGRESS
+Started: [timestamp]
+
+## Phases
+- [ ] Phase 1: Setup
+- [ ] Phase 2: Foundational
+- [ ] Phase 3: [Story name]
+...
+
+## Completed Tasks
+(updated after every task)
+
+## Files Created
+(updated after every task)
+
+## Current Phase
+Phase 1
+```
+
+**Update this file after EVERY completed task** — not at the end of the phase. This is the crash recovery mechanism. If context is lost mid-phase, the next invocation reads this file and resumes exactly where you stopped.
+
+### 5. Parse Tasks
 
 Extract from tasks.md:
 - Task phases (Setup, Foundational, Stories, Polish)
@@ -97,41 +133,77 @@ Extract from tasks.md:
 - File paths per task
 - Task types (migration, model, service, route, test, frontend component, etc.)
 
-### 5. Execute by Phase
+**If any phase has > 15 tasks**: STOP. Do not attempt that phase in one context. Split it — run tasks 1-10 first, write progress, then continue with 11+.
+
+### 6. Execute ONE Phase at a Time
+
+> **CRITICAL: Never load all phases into context at once. Execute one phase, verify it completely, write progress, then move to the next.**
+
+```
+FOR EACH PHASE in tasks.md:
+  1. Read ONLY the tasks for this phase from tasks.md
+  2. Announce: "Starting Phase N: [name] — [count] tasks"
+  3. Execute tasks (see per-task protocol below)
+  4. Run End-of-Phase Checkpoint
+  5. Write phase completion to progress.md
+  6. Announce: "✓ Phase N complete — [N] tasks done, [test count] tests passing"
+  7. ONLY THEN load next phase tasks into context
+```
 
 ```
 Phase 1: Setup
 ├── Sequential tasks in order
 ├── Parallel [P] tasks together
 ├── Verify each task immediately after writing it
+├── Write to progress.md after each task
 └── End-of-Phase Checkpoint: all tasks verified, tests clean
 
 Phase 2: Foundational
 ├── Core infrastructure
 ├── Base models/entities
 ├── Verify each task immediately after writing it
+├── Write to progress.md after each task
 └── End-of-Phase Checkpoint: foundation verified, tests clean
 
-Phase 3+: User Stories
+Phase 3+: User Stories (max 15 tasks per phase)
 ├── PROTOTYPE GATE (before ANY frontend task — see below)
 ├── Tests first (if requested) — must FAIL before implementing
 ├── Models → Services → Endpoints → Frontend
 ├── Verify each task immediately after writing it
+├── Write to progress.md after each task
 └── End-of-Phase Checkpoint: story verified, all tests passing
 
 Phase N: Polish
-├── Documentation
-├── Optimization
+├── Documentation, Optimization
 ├── Verify each task immediately after writing it
+├── Write to progress.md after each task
 └── End-of-Phase Checkpoint: feature verified end-to-end
 
-Inter-Agent QA Loop (after all phases)
+Inter-Agent QA Loop (after ALL phases complete)
 ├── test-generator agent
 ├── Full test suite run
 ├── code-reviewer agent
 ├── Fix any issues found
 └── ui-pixel-validator via Chrome (functional E2E flows + visual pixel validation against prototype)
 ```
+
+### What to Write to progress.md After Every Task
+
+```markdown
+## Completed Tasks
+- [X] T001 Create migration — VERIFIED: php artisan migrate PASSED ✓
+- [X] T002 Agent model — VERIFIED: php -l PASSED, tinker load PASSED ✓
+- [ ] T003 AgentService — IN PROGRESS
+
+## Files Created
+- database/migrations/2024_01_01_create_agents_table.php
+- app/Models/Agent.php
+
+## Current Phase
+Phase 2: Foundational (3/8 tasks done)
+```
+
+This file is the ground truth. If the agent's context fills up mid-phase and a new invocation starts, it reads this file and knows exactly what was done and what to continue.
 
 ---
 
