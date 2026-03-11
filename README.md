@@ -9,10 +9,12 @@
 
 The VelentsAI Claude Agent Toolkit is a **Claude Code plugin** — 32 specialized AI agents, 22 domain knowledge skills, and 21 slash commands built specifically for the VelentsAI platform.
 
+**Architecture**: Agents are short, direct, specialized instructions (~50 lines). All code patterns live in 3 rich skills loaded automatically — `velents-backend`, `velents-frontend`, `velents-testing` — extracted from the real VelentsAI codebase. Agents tell agents *what to do*; skills show them *how the code looks*.
+
 Every agent already knows:
 - Multi-tenant architecture (stancl/tenancy v3, database-per-tenant isolation)
 - 4 core business flows: text conversation, voice call, agent builder, batch campaign
-- Laravel 12 + Next.js 16 patterns used across the actual codebase
+- Real Laravel 12 + Next.js 16 patterns extracted from the actual codebase
 - All 46 shadcn/ui components, OKLCH color system, RTL Arabic support
 - Voice pipelines (Normal/Fast/Flash), ElevenLabs, LiveKit, CallGateway
 - Payment/credit system, Spatie RBAC, WebSocket (Laravel Reverb)
@@ -189,8 +191,8 @@ Skills are domain knowledge injected into agents automatically — you never inv
 |-------|---------------|
 | `velents-core-flows` | 4 core business flows, key models, external services |
 | `velents-architecture` | Full system architecture, 5-layer structure, repo layout |
-| `velents-backend` | Laravel patterns, repository pattern, service layer conventions |
-| `velents-frontend` | Next.js 16 App Router, ApiClient, component patterns, state management |
+| `velents-backend` | **Full code patterns from the real codebase** — Controller, Repository, Service, Job, Resource, FormRequest, Migration with exact VelentsAI conventions |
+| `velents-frontend` | **Full code patterns from the real codebase** — ApiClient singleton, Service classes, Zustand store, TanStack Query hooks, component patterns, RTL support |
 | `velents-multitenancy` | stancl/tenancy v3, database-per-tenant, tenant context |
 | `velents-auth-rbac` | Sanctum tokens, Spatie permissions, 50 permissions across 11 categories |
 | `velents-integrations` | ElevenLabs, LiveKit, CallGateway, WhatsApp, Gemini API patterns |
@@ -199,7 +201,7 @@ Skills are domain knowledge injected into agents automatically — you never inv
 | `velents-realtime` | Laravel Echo, Pusher/Reverb, WebSocket patterns |
 | `velents-payment` | Credit system, payment plans, per-message deduction |
 | `velents-analytics` | GeminiJudge, 6 quality metrics, conversation analysis |
-| `velents-testing` | MultiTenancyTestCase, PHPUnit, Vitest patterns |
+| `velents-testing` | **Full code patterns from the real codebase** — MultiTenancyTestCase (full class), PHPUnit feature test patterns, cross-tenant isolation testing |
 | `velents-ui-inventory` | 46 shadcn/ui components, OKLCH colors, RTL rules — REUSE ONLY |
 
 ### Quality & Prevention Skills
@@ -301,6 +303,8 @@ Before this toolkit was built, features finished by agents had ~40% issues requi
 | Agents guessed UI from requirements | velents-ui-prototype skill: read prototype, ask gaps, validate in Chrome |
 | Agents used outdated library APIs | velents-llms-txt: fetch docs before writing any library code |
 | Changes broke existing features silently | velents-feature-map: impact checklist before any code |
+| Agent hallucinated completions on large DoDs | 15-task phase limit + progress.md crash recovery + per-phase speckit-implement invocation |
+| Code patterns duplicated in every agent | All code lives in 3 skills (velents-backend, velents-frontend, velents-testing) — agents are simple direct instructions |
 
 ---
 
